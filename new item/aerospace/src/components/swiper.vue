@@ -4,7 +4,7 @@
       <div class="content">
         <!-- left -->
         <div class="category-left category-cooperatelib">
-          <h1>学术文献总库包括</h1>
+          <h1 style="color:#0ba2eb">学术文献总库包括</h1>
           <ul class="all-docdata">
             <li>
               <span>SCI：</span> 1500余篇
@@ -287,12 +287,12 @@ this.$once('hook:beforeDestroy', () => {
   display: block;
   min-width: 163px;
   line-height: 30px;
-  color: #999;
+  color: #e8fbfa;
 }
 .all-docdata li span {
   margin-right: 5px;
   font-size: 15px;
-  color: #2267c7;
+  color: #16706a;
 }
 
 .is-down {

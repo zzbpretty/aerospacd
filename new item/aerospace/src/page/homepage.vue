@@ -78,6 +78,7 @@ export default {
   background-color: #fff;
   clear: both;
   margin-top: 25px;
+  opacity: .9;
   
 }
 .choose-content{
@@ -177,8 +178,9 @@ a:hover{
     background-position: top center;
 }
 .backgound-home{
-  
-  background: url('../assets/img/gloable.jpg') no-repeat;
-  background-size: 1920px 1000px  ;
+  width: 1920px;
+  margin: 0 auto;
+  background: url('../assets/img/gloable.jpg') ;
+  background-size: 1920px 1080px  ;
 }
 </style>

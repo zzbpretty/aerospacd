@@ -332,4 +332,5 @@ export default {
 .choose-bottom ul li i {
     margin-right: 5px;
 }
+
 </style>

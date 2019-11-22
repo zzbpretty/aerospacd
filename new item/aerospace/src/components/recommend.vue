@@ -5,22 +5,35 @@
     <el-card class="box-card">
       <div  class="text item">
         <h4 style="border-bottom:1px solid black;padding-bottom:15px;color:#666;padding-left:10px">用户名:</h4>
-        <ul class="jingzhun">
-         <li v-for="(item,index) in user" :key="index" style="height:40px;line-heitht:40px">
-            <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
-            <div style="float:right;margin-right:110px;margin-top:5px">
-              <el-button type="text" @click="centerDialogVisible = true">{{item.username}}</el-button> 
+        <ul class="jingzhun" style="margin-top:10px">
+         <li v-for="(item,index) in frontuser" :key="index" style="width:180px;height:40px">
+            <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" style="float:left"></el-avatar>
+            <div style="float:left;margin-left:20px;">
+              <el-button type="text" @click="centerDialogVisible = true;getusername($event)" style="font-size:14px" :data-id='item.username' :id='item.userid'>{{item.username}}</el-button> 
               <el-dialog
                  title="用户信息"
                  :visible.sync="centerDialogVisible"
                  width="30%"
-                 center>
+                 center v-for="(item1,index) in afteruser" :key='index'>
                  <div style="margin:16px 0">
-                   尊敬的<span>{{item.username}}</span>用户，您好!
+                   尊敬的<span style="color:red">{{item1.username}}</span>用户，您好!
                  </div>
                  <h2>根据您近期的搜索记录，为您精准推荐：</h2>
-                 <div v-for="(item1,index) in item.value" :key='index' style="margin:8px 0;color:#8dc271" @click="tolist" :data-id='item1'>
-                   &emsp;&emsp;{{item1}}
+                 <div class="data" style="padding:20px">
+                 <table style="table-layout: fixed;border-collapse: collapse;border-spacing: 0;">
+                   <thead>
+                      <tr class="thead_tr">
+                         <th class="th-01" style="width:100px;text-align:center">序号</th>
+                         <th class="th-02" style="width:380px;text-align:left">关键词</th>
+                      </tr>
+                   </thead>
+                  <tbody>
+                    <tr v-for="(item2,index) in item1.value" :key='index'>
+                      <td style="width:100px;text-align:center;color: #f26d5f;font-size:16px">{{index}}</td>
+                      <td style="width:380px;text-align:left;color:#0078b6;font-size:16px"  @click="tolist($event)" :data-id='item2'>{{item2}}</td>
+                    </tr>
+                  </tbody>
+                 </table>
                  </div>
                  </el-dialog>
             </div>
@@ -44,12 +57,28 @@
 export default {
   data() {
     return {
-      user:[{username:'11',
-             userid:"",
-             value:[
-               "大数据",
-               "区块链"
-               ]}],
+      frontuser:[{
+             username:'小明',
+             userid:"110000",
+            },{
+             username:'安东',
+             userid:"310000",
+            },{
+             username:'Alice',
+             userid:"440000",
+            },{
+             username:'Jack',
+             userid:"320000",
+            },{
+             username:'小李',
+             userid:"330000",
+            },
+               ],
+      afteruser:[{
+             username:'小明',
+             userid:"110000",
+             value:["aa",'bb']
+            }],
       idurl:'',
       centerDialogVisible: false,
       recommendData: [
@@ -97,16 +126,7 @@ export default {
     };
   },
   created(){
-    // let data1={};
-    // this.$ajax
-    //       .post(this.idurl, data1)
-    //       .then(res => {
-    //         this.user = res.data
-    //         // console.log(res.data)
-    //       })
-    //       .catch(res => {
-    //         console.log(res);
-    //       });
+   
   },
   methods:{
       tolist(event) {
@@ -117,6 +137,22 @@ export default {
       });
       window.open(abstracthref.href,'_blank')
     },
+    getusername(event){
+      // let target = event.target || window.event.srcElement;
+      // let name = target.getAttribute("data-id")
+      // let id = target.getAttribute("id")
+
+      // let data1={username:name,userid:id};
+      //  this.$ajax
+      //     .post(this.idurl, data1)
+      //     .then(res => {
+      //       this.afteruser = res.data
+      //       // console.log(res.data)
+      //     })
+      //     .catch(res => {
+      //       console.log(res);
+      //     });
+    }
   }
 };
 </script>
@@ -166,5 +202,14 @@ export default {
   padding-top: 5px;
   background: url("../assets/img/listicon.gif") no-repeat scroll -2px 2px transparent;
 }
-
+.data th {
+    line-height: 30px;
+    border-bottom: solid 1px #f1eeee;
+    color: #999;
+}
+.data tr {
+    line-height: 30px;
+    border-bottom: solid 1px #f2f2f5;
+    color: #999;
+}
 </style>
