@@ -1,0 +1,41 @@
+{
+"total": 6,
+"pages": 1,
+"data": [
+{
+"con_from": "Air & Space Magazine |",
+"data_snapshot_path": "snapshot/airspacemag/56a2dd40-ab2a-403b-8c95-f5115164fe3c.png",
+"con_text": "And, once we realize that, I think it’s easier to think about protecting our planet.”Girl Scout cadettes (grades 6-8) can earn the space science researcher badge by investigating properties of light and observing the night sky; seniors (grades 9-<em>10</em>) can obtain the space science expert badge by classifying stars and studying their life cycles; and ambassadors (grades 11-12) seeking the space science master badge will explore exoplanets through activities such as designing a habitat for an alien world",
+"con_time": "2019-09-30T16:00:00.000Z",
+"con_abstract": "",
+"data_source_type": "website",
+"con_title": "Girl Scouts, Now You Can Earn a Badge in Space Science --- A new way to encourage young women to learn about stars and exoplanets.",
+"data_mode": "spider",
+"data_id": "1523",
+"data_time": "2019-10-12T08:13:19.000Z",
+"data_address": "https://www.airspacemag.com/airspacemag/scouting-cosmos-180973141/",
+"data_type": "html",
+"con_author": "Mark Strauss",
+"data_spidername": "airspacemag"
+},
+{
+"con_from": "Air & Space Magazine |",
+"data_snapshot_path": "snapshot/airspacemag/56a2dd40-ab2a-403b-8c95-f5115164fe3c.png",
+"con_text": "And, once we realize that, I think it’s easier to think about protecting our planet.”Girl Scout cadettes (grades 6-8) can earn the space science researcher badge by investigating properties of light and observing the night sky; seniors (grades 9-<em>10</em>) can obtain the space science expert badge by classifying stars and studying their life cycles; and ambassadors (grades 11-12) seeking the space science master badge will explore exoplanets through activities such as designing a habitat for an alien world",
+"con_time": "2019-09-30T16:00:00.000Z",
+"con_abstract": "",
+"data_source_type": "website",
+"con_title": "Girl Scouts, Now You Can Earn a Badge in Space Science --- A new way to encourage young women to lear",
+"data_mode": "spider",
+"data_id": "1520",
+"data_time": "2019-10-12T08:06:52.000Z",
+"data_address": "https://www.airspacemag.com/airspacemag/welcome-airport-180973136/",
+"data_type": "html",
+"con_author": "Craig Mellow",
+"data_spidername": "airspacemag"
+}
+],
+"start": 0,
+"length": 6,
+"end": 6
+}
