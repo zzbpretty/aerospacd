@@ -3,7 +3,12 @@
         <div class="m-all">
           <div class="topnav">
 			<ul class="nav">
-                 <router-link to="/"><img src="../assets/img/hangtianlogo2.jpg" alt="中国航天系统科学与工程研究院" style="float:left;height:75px"></router-link>
+                  <router-link to="/" class="link-home">
+                    <div style="height:71px;float:left;position:absolute;top:-1px">
+                        <div style="height:45px;line-height:45px;font-size:18px;font-weight:900;color:white">中国航天系统科学与工程研究院四所</div>
+                        <div style="color:white">China Aerospace Academy of Systems Science and Engineering</div>
+                    </div>
+                </router-link>
 				 <li><a href="javascript:void(0)">常见问题</a></li>
 				 <li><a href="javascript:void(0)">使用帮助</a></li>
 				 <li><a href="javascript:void(0)">下载</a></li>

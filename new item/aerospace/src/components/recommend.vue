@@ -9,14 +9,14 @@
          <li v-for="(item,index) in frontuser" :key="index" style="width:180px;height:40px">
             <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" style="float:left"></el-avatar>
             <div style="float:left;margin-left:20px;">
-              <el-button type="text" @click="centerDialogVisible = true;getusername($event)" style="font-size:14px" :data-id='item.username' :id='item.userid'>{{item.username}}</el-button> 
+              <el-button type="text" @click="getusername($event);centerDialogVisible = true" style="font-size:14px" :data-id='item.userName' :id='item.userId'>{{item.userName}}</el-button> 
               <el-dialog
                  title="用户信息"
                  :visible.sync="centerDialogVisible"
                  width="30%"
-                 center v-for="(item1,index) in afteruser" :key='index'>
+                 center>
                  <div style="margin:16px 0">
-                   尊敬的<span style="color:red">{{item1.username}}</span>用户，您好!
+                   尊敬的<span style="color:red">{{afteruser.userName}}</span>用户，您好!
                  </div>
                  <h2>根据您近期的搜索记录，为您精准推荐：</h2>
                  <div class="data" style="padding:20px">
@@ -24,13 +24,15 @@
                    <thead>
                       <tr class="thead_tr">
                          <th class="th-01" style="width:100px;text-align:center">序号</th>
-                         <th class="th-02" style="width:380px;text-align:left">关键词</th>
+                         <th class="th-02" style="width:200px;text-align:left">关键词</th>
+                         <th class="th-03" style="width:150px;text-align:center">次数</th>
                       </tr>
                    </thead>
                   <tbody>
-                    <tr v-for="(item2,index) in item1.value" :key='index'>
-                      <td style="width:100px;text-align:center;color: #f26d5f;font-size:16px">{{index}}</td>
-                      <td style="width:380px;text-align:left;color:#0078b6;font-size:16px"  @click="tolist($event)" :data-id='item2'>{{item2}}</td>
+                    <tr class="tbody_tr" v-for="(item1,index) in afteruser.recommendResult" :key='index'>
+                      <td style="width:100px;text-align:center;color: #f26d5f;font-size:16px">{{index+1}}</td>
+                      <td style="width:200px;text-align:left;color:#0078b6;font-size:16px"  @click="tolist($event)" :data-id='item1.value'>{{item1.value}}</td>
+                      <td style="width:150px;text-align:center;color:#0078b6;font-size:16px" >{{item1.count}}</td>
                     </tr>
                   </tbody>
                  </table>
@@ -58,28 +60,24 @@ export default {
   data() {
     return {
       frontuser:[{
-             username:'小明',
-             userid:"110000",
+             userName:'小明',
+             userId:"110000",
             },{
-             username:'安东',
-             userid:"310000",
+             userName:'安东',
+             userId:"310000",
             },{
-             username:'Alice',
-             userid:"440000",
+             userName:'Alice',
+             userId:"440000",
             },{
-             username:'Jack',
-             userid:"320000",
+             userName:'Jack',
+             userId:"320000",
             },{
-             username:'小李',
-             userid:"330000",
+             userName:'小李',
+             userId:"330000",
             },
                ],
-      afteruser:[{
-             username:'小明',
-             userid:"110000",
-             value:["aa",'bb']
-            }],
-      idurl:'',
+      afteruser:[],
+      idurl:'http://192.168.100.41:8772/searchPage/recommendResult',
       centerDialogVisible: false,
       recommendData: [
         {
@@ -138,20 +136,19 @@ export default {
       window.open(abstracthref.href,'_blank')
     },
     getusername(event){
-      // let target = event.target || window.event.srcElement;
-      // let name = target.getAttribute("data-id")
-      // let id = target.getAttribute("id")
-
-      // let data1={username:name,userid:id};
-      //  this.$ajax
-      //     .post(this.idurl, data1)
-      //     .then(res => {
-      //       this.afteruser = res.data
-      //       // console.log(res.data)
-      //     })
-      //     .catch(res => {
-      //       console.log(res);
-      //     });
+      let target = event.currentTarget 
+      let name = target.getAttribute("data-id")
+      let id = target.getAttribute("id")
+      let data1={userName:name,userId:id,recommendType:'realtime'};
+       this.$ajax
+          .post(this.idurl, data1)
+          .then(res => {
+            this.afteruser = res.data
+            console.log(this.afteruser)
+          })
+          .catch(res => {
+            console.log(res);
+          });
     }
   }
 };
@@ -211,5 +208,25 @@ export default {
     line-height: 30px;
     border-bottom: solid 1px #f2f2f5;
     color: #999;
+}
+.el-dialog{
+    border-radius: 10px;
+} 
+.el-dialog__header{
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  background: #4286ec;
+}
+.el-dialog__title{
+  font-family: "Microsoft YaHei","微软雅黑";
+  color: #97e079;
+  font-weight: 800;
+  font-size: 20px;
+}
+.el-dialog__close{
+  color: white !important;
+}
+.tbody_tr:nth-child(odd){
+  background-color: #f4f4f5;
 }
 </style>

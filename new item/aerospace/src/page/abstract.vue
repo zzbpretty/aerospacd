@@ -86,10 +86,10 @@ export default {
   },
 
   create(){
-   
+    
   },
-   mounted(){
-        this.datatype = this.$route.query.data_type
+  mounted(){
+      this.datatype = this.$route.query.data_type
      let data1 = { data_id: this.$route.query.con_title };
      this.$ajax
       .get(this.abstracturl+data1.data_id)

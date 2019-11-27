@@ -121,7 +121,7 @@ export default {
     font-family: "Microsoft Yahei";
 }
 .foot-top li + li {
-    margin-left: 105px;
+    margin-left: 80px;
 }
 .foot-top .weibo {
     height: 90px;

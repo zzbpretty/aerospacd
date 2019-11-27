@@ -180,7 +180,7 @@ a:hover{
 .backgound-home{
   width: 1920px;
   margin: 0 auto;
-  background: url('../assets/img/gloable.jpg') ;
-  background-size: 1920px 1080px  ;
+  background: url('../assets/img/gloable.jpg') no-repeat ;
+  background-size: 1920px 100%  ;
 }
 </style>

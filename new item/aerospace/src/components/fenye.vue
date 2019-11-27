@@ -200,7 +200,7 @@ export default {
         size: 20,
         start: 0
       };
-      console.log(data);
+      // console.log(data);
       this.$ajax
         .post("http://192.168.100.44:8070/search/match", data)
         .then(res => {

@@ -30,9 +30,7 @@ Vue.prototype.$ajax = axios;
 Vue.prototype.$qs = qs;
 Vue.prototype.$echarts = echarts 
 router.afterEach((to,from,next) => {
-
   window.scrollTo(0,0);
-
 })
 
 /* eslint-disable no-new */

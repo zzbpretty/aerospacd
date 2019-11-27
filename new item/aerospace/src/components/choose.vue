@@ -6,7 +6,7 @@
     <el-tabs v-model="activeTitle" type="card" @tab-click="handleClick">
       <el-tab-pane v-for="(item,index) in chooseData" :key="index"  :label="item.title" :name="item.title">
         <div class="choose-box" v-for="(item1,index) in item.content" :key="index">
-          <router-link :to=item1[7].con_read><h3>{{item1[0].con_title}}</h3></router-link>
+          <router-link :to=item1[7].con_read target='_blank'><h3>{{item1[0].con_title}}</h3></router-link>
           <p class="choose-p">
             <span>责编：{{item1[1].con_author}}</span>|
             <span>来源：{{item1[2].con_from}}</span>
@@ -17,7 +17,7 @@
             <span>发表时间：{{item1[6].con_data}}</span>
             <ul>
               <li>
-                <router-link :to=item1[7].con_read><i class="fa fa-book" aria-hidden="true" style="color:#74a2f2">&nbsp;查&nbsp;看</i></router-link>
+                <router-link :to=item1[7].con_read target='_blank'><i class="fa fa-book" aria-hidden="true" style="color:#74a2f2">&nbsp;查&nbsp;看</i></router-link>
               </li>
             </ul>
           </div>

@@ -292,7 +292,7 @@ this.$once('hook:beforeDestroy', () => {
 .all-docdata li span {
   margin-right: 5px;
   font-size: 15px;
-  color: #16706a;
+  color: #61eee5;
 }
 
 .is-down {

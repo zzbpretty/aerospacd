@@ -825,8 +825,9 @@ export default {
       itemStyle: { // 地图区域的多边形 图形样式。
         borderColor: 'rgba(0, 0, 0, 0.2)',
         emphasis: { // 高亮状态下的多边形和标签样式
+          color:'rgba(255,0,0,0.5)' ,
           shadowBlur: 20,
-          shadowColor: 'rgba(0, 0, 0, 0.5)'
+          shadowColor: 'rgba(255, 0, 0, 1)'
         }
       }
       },
@@ -1110,7 +1111,7 @@ export default {
    var yanshi = setTimeout(() => {
      this.getrealchart()
      this.getbingtu()
-   }, 1000); 
+   }, 1500); 
   },
   destroyed(){
     clearTimeout(yanshi)

@@ -47,7 +47,8 @@ exports.cssLoaders = function (options) {
     if (options.extract) {
       return ExtractTextPlugin.extract({
         use: loaders,
-        fallback: 'vue-style-loader'
+        fallback: 'vue-style-loader',
+        publicPath:"../../"            //(默认没有)添加这一句后就可解决图片加载不出的问题(static中文件引用错误)
       })
     } else {
       return ['vue-style-loader'].concat(loaders)
