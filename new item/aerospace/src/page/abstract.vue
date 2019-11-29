@@ -27,7 +27,7 @@
 
           <div class="dl_xunlei_tips">为了良好体验，不建议使用迅雷下载</div>
           <div class="resource_dl_btn">
-            <a :href="'http://192.168.100.44:8070/search/downloadFile/'+ this.$route.query.con_title" class="dl_btn">立即下载</a>
+            <a download="this.$route.query.con_title+'.txt'" :href="'http://192.168.100.44:8070/search/context/'+ this.$route.query.con_title" class="dl_btn">立即下载</a>
           </div>
         </div>
     </div>
@@ -46,7 +46,9 @@
         <div class="c-data">{{abstractData.con_time}}</div>
       </div>
       <div class="c-c-content">
-        <p><span>摘要：&nbsp;</span>{{abstractData.keysentence}}</p>
+        <p v-html="abstractData.keysentence"><span>摘要：&nbsp;</span>
+        {{abstractData.keysentence}}
+        </p>
         <p><span>关键字：&nbsp;</span>{{abstractData.keyword}}</p>
       </div>
       <div class="c-c-footer">
@@ -87,6 +89,11 @@ export default {
 
   create(){
     
+  },
+  methods:{
+    download(){
+
+    }
   },
   mounted(){
       this.datatype = this.$route.query.data_type

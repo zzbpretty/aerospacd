@@ -136,11 +136,12 @@ export default {
       window.open(abstracthref.href,'_blank')
     },
     getusername(event){
+      
       let target = event.currentTarget 
       let name = target.getAttribute("data-id")
       let id = target.getAttribute("id")
-      let data1={userName:name,userId:id,recommendType:'realtime'};
-       this.$ajax
+      let data1={userName:name,userId:id,recommendType:'realTime'};
+      this.$ajax
           .post(this.idurl, data1)
           .then(res => {
             this.afteruser = res.data

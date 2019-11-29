@@ -6,7 +6,7 @@
           <h1>{{ranktitle}}</h1>
       </div>
     <el-tabs :tab-position="tabPosition" v-model="activeTab" @tab-click="handleClick" style="">
-      <el-tab-pane label="实时排序" name="realtime" >
+      <el-tab-pane label="实时排序" name="realTime" >
         <el-tabs type="border-card">
           <!-- 地图 -->
           <el-tab-pane v-if="this.$route.query.con_title == 'ipRank'" label="地图">
@@ -187,11 +187,12 @@ export default {
 
       // 切换实时排序
       async changeReal(){
-      let data1 = { exhibitionType: "realtime" };
+      let data1 = { exhibitionType: "realTime" };
       await this.$ajax
       .post(this.rankurl, data1)
       .then(res => {
-        this.rankData = res.data[this.$route.query.con_title];
+        this.rankData = res.data.exhibitionResult[this.$route.query.con_title];
+        console.log(res.data.exhibitionResult)
       })
       .catch(res => {
         console.log(res);
@@ -328,7 +329,7 @@ export default {
       .post(this.rankurl, data2)
       .then(res => {
         // console.log(res)
-        this.rankData = res.data[this.$route.query.con_title];
+        this.rankData = res.data.exhibitionResult[this.$route.query.con_title];
         
       })
       .catch(res => {
@@ -464,7 +465,7 @@ export default {
      await   this.$ajax
       .post(this.rankurl, data3)
       .then(res => {
-        this.rankData = res.data[this.$route.query.con_title];
+        this.rankData = res.data.exhibitionResult[this.$route.query.con_title];
         for(let i =0;i<this.rankData.length;i++){
      this.chartOption.series[0].data.push({name:this.rankData[i].value,value:this.rankData[i].rank})
   }
@@ -601,7 +602,7 @@ export default {
       await this.$ajax
       .post(this.rankurl, data4)
       .then(res => {
-        this.rankData = res.data[this.$route.query.con_title];
+        this.rankData = res.data.exhibitionResult[this.$route.query.con_title];
         for(let i =0;i<this.rankData.length;i++){
      this.chartOption.series[0].data.push({name:this.rankData[i].value,value:this.rankData[i].rank})
       }
@@ -734,7 +735,7 @@ export default {
 
       //切换tab 
       handleClick(tab,event){
-         if(tab.name == 'realtime'){
+         if(tab.name == 'realTime'){
            this.changeReal()
          }else if(tab.name == 'day'){
            this.changeDay()
@@ -978,7 +979,7 @@ export default {
     await this.$ajax
       .post(this.rankurl, data0)
       .then(res => {
-           this.rankData = res.data[this.$route.query.con_title];
+           this.rankData = res.data.exhibitionResult[this.$route.query.con_title];
         
           // console.log(this.rankData)  
       })
