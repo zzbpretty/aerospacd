@@ -7,21 +7,21 @@
       </div>
     <el-tabs :tab-position="tabPosition" v-model="activeTab" @tab-click="handleClick" style="">
       <el-tab-pane label="实时排序" name="realTime" >
-        <el-tabs type="border-card">
+        <el-tabs v-model="activeTuTab" type="border-card">
           <!-- 地图 -->
-          <el-tab-pane v-if="this.$route.query.con_title == 'ipRank'" label="地图">
+          <el-tab-pane v-if="this.$route.query.con_title == 'ipRank'" label="地图" name="ditu">
              <div class="realmap" style="width:1200px;height:650px">
                 
              </div>
           </el-tab-pane>
           <!-- 饼图 -->
-          <el-tab-pane v-if="!(this.$route.query.con_title == 'ipRank')" label="饼图">
+          <el-tab-pane v-if="!(this.$route.query.con_title == 'ipRank')" label="饼图" name="bingtu">
                <div class="bingtu" style="width:1200px;height:650px">
                 
                </div>
           </el-tab-pane>
           <!-- 数据 -->
-          <el-tab-pane label="数据">
+          <el-tab-pane label="数据" name="shuju" class="dashuju">
             <el-table ref="singleTable"  :data="rankData" highlight-current-row @current-change="handleCurrentChange"  style="width: 100%"> 
               <el-table-column  type="index" label="序号"  width="100"> </el-table-column>
               <el-table-column   :label=content  width="400" style="text-align:center"> 
@@ -53,7 +53,7 @@
              </div>
           </el-tab-pane>
           <!-- 数据 -->
-          <el-tab-pane label="数据">
+          <el-tab-pane label="数据" class="dashuju">
             <el-table ref="singleTable"  :data="rankData" highlight-current-row @current-change="handleCurrentChange"  style="width: 100%"> 
               <el-table-column  type="index" label="序号"  width="100"> </el-table-column>
               <el-table-column   :label=content  width="400" style="text-align:center"> 
@@ -85,7 +85,7 @@
              </div>
           </el-tab-pane>
           <!-- 数据 -->
-          <el-tab-pane label="数据">
+          <el-tab-pane label="数据" class="dashuju">
             <el-table ref="singleTable"  :data="rankData" highlight-current-row @current-change="handleCurrentChange"  style="width: 100%"> 
               <el-table-column  type="index" label="序号"  width="100"> </el-table-column>
               <el-table-column   :label=content  width="400" style="text-align:center"> 
@@ -117,7 +117,7 @@
              </div>      
           </el-tab-pane>
           <!-- 数据 -->
-          <el-tab-pane label="数据">
+          <el-tab-pane label="数据" class="dashuju">
             <el-table ref="singleTable"  :data="rankData" highlight-current-row @current-change="handleCurrentChange"  style="width: 100%"> 
               <el-table-column  type="index" label="序号"  width="100"> </el-table-column>
               <el-table-column   :label=content  width="400" style="text-align:center"> 
@@ -159,6 +159,7 @@ export default {
       rankData: [],
       tabPosition: "left",
       activeTab:"",
+      activeTuTab:"bingtu",
       content:"",
       ranktitle:"",
       rankurl:"http://192.168.100.41:8772/searchPage/bigDataExhibition",
@@ -878,15 +879,17 @@ export default {
               trigger: 'item',
               formatter (params, ticket, callback) { 
               // params.data 就是series配置项中的data数据遍历
-              let name,value,rank
+              let name,value,rank,all
               if (params.data) {
                  name = params.data.name
                  value = params.data.value
                  rank = params.data.rank
+                 all = params.data.all
               } else { // 为了防止没有定义数据的时候报错写的
                name = ""
                value = 0
                rank = 0
+               all = 0
               }
 
                let htmlStr = `
@@ -894,6 +897,7 @@ export default {
                <p style='text-align:left;margin-top:-10px;'>
                访问次数：${value}<br/>
                访问排名：${rank}<br/>
+               占比：${value/all}
                </p>`
         
                 return htmlStr
@@ -906,8 +910,13 @@ export default {
               top: '150px',
               data:[],
               itemWidth: 24,   // 设置图例图形的宽
-              formatter: function (name) {
-                return name.substr(0,18)+'...'
+              formatter:  (name)=> {
+                if(this.$route.query.con_title == "contentRank"){
+                  return name.substr(0,18)+'...'
+                }
+                else{
+                  return name
+                }
                },
              
           },
@@ -928,9 +937,10 @@ export default {
               }
           ],
       };
-      
+      let all
       for(let i =0;i<this.rankData.length;i++){
-        this.chartOption1.series[0].data.push({name:this.rankData[i].value,value:this.rankData[i].count,rank:this.rankData[i].rank})
+         all += Number(this.rankData[i].value);
+        this.chartOption1.series[0].data.push({name:this.rankData[i].value,value:this.rankData[i].count,rank:this.rankData[i].rank,all:all})
         this.chartOption1.legend.data.push(this.rankData[i].value)
       }
 
@@ -951,15 +961,19 @@ export default {
     if (this.$route.query.con_title=='ipRank'){
       this.content = "访问区域" 
       this.ranktitle = "访问区域排序"
+      this.activeTuTab = "ditu"
       }else if(this.$route.query.con_title=='stateRank'){
       this.content = "访问请求状态"
       this.ranktitle = "访问请求状态排序"
+      this.activeTuTab = "bingtu"
       }else if(this.$route.query.con_title=='fromRank'){
        this.content = "搜索来源"
        this.ranktitle = "搜索来源排序"
+       this.activeTuTab = "bingtu"
       }else if(this.$route.query.con_title=='contentRank'){
       this.content = "页面点击"
       this.ranktitle = "页面点击排序"
+      this.activeTuTab = "shuju"
       }
     //修改不同标题样式
     this.activeTab=this.$route.query.con_method
@@ -1108,6 +1122,7 @@ export default {
   },
 
   mounted(){
+    
     // 画地图
    var yanshi = setTimeout(() => {
      this.getrealchart()
@@ -1121,12 +1136,11 @@ export default {
 
 }
 </script>
-<style>
+<style >
 .el-table td,.el-table th{
   text-align: center !important;
 }
-</style>
-<style scoped>
+
 .rank-content{
     width: 1400px;
     margin: 0 auto;
@@ -1156,5 +1170,13 @@ export default {
 .contenttext{
   text-align: left;
   padding-left:15px;
+}
+.dashuju  .el-table__row:nth-child(-n+3)>td:nth-child(1){
+  color: red !important;
+  font-size: 16px
+}
+.dashuju  .el-table__row:nth-child(n+18)>td:nth-child(1){
+  color: rgb(22, 231, 22) !important;
+  font-size: 16px
 }
 </style>

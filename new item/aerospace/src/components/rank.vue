@@ -4,8 +4,12 @@
     <el-card class="box-card">
       <div class="text item" style="padding-top:0px">
         <ul class="jingzhun" style="margin-top:10px">
-          <li v-for="(item,index) in newdate" :key="index" style="width:180px;height:30px;font-size:16px">
-            <div style="">
+          <li
+            v-for="(item,index) in newdate"
+            :key="index"
+            style="width:180px;height:30px;font-size:16px"
+          >
+            <div style>
               <el-button
                 type="text"
                 @click="gettimedate($event);centerDialogVisible1 = true"
@@ -14,9 +18,30 @@
                 :id="item.time"
               >{{item.time}}新词</el-button>
               <el-dialog title="新词发现" :visible.sync="centerDialogVisible1" width="30%" center>
-                <h2>{{neologism.time}}发现的新词有：</h2>
-                <div class="data" style="padding:20px">
-                  <span class="dataspan" v-for="(item,index) in neologism.data" :key="index">{{item}}</span>
+                <h2>{{neologism.timeName}}发现的新词有：</h2>
+                <!-- <div class="data" style="padding:20px">
+                  <span class="dataspan" v-html="item.newEntity" v-for="(item,index) in neologism.newWord" :key="index">{{item.newEntity}}</span>
+                </div>-->
+                <div class="xinci" style="padding:20px">
+                  <table>
+                    <thead>
+                      <tr style="margin:5px 0">
+                        <th class="th-01" style="width:200px;text-align:center">时间</th>
+                        <th class="th-02" style="width:300px;text-align:left">新词</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr style v-for="(item,index) in neologism.newWord" :key="index">
+                        <td
+                          style="width:200px;text-align:center;color: #f26d5f;font-size:16px"
+                        >{{item.conTime}}</td>
+                        <td
+                          style="width:300px;text-align:left;color:#0078b6;font-size:16px"
+                          v-html="item.newEntity"
+                        >{{item.newEntity}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
               </el-dialog>
             </div>
@@ -52,6 +77,48 @@
         >{{item1.title}}</div>
       </div>
     </el-card>
+    <!-- 智能分析 -->
+    <div class="recommend">智能分析</div>
+    <el-card class="box-card">
+      <div class="text item" style="padding-top:0px">
+        <ul class="jingzhun" style="margin-top:10px">
+          <li
+            v-for="(item,index) in analyze"
+            :key="index"
+            style="width:180px;height:30px;font-size:16px"
+          >
+            <div style>
+              <el-button
+                type="text"
+                @click="analyze1($event);centerDialogVisible2 = true"
+                style="font-size:14px"
+                :data-id="item.realname"
+                :id="item.sendname"
+              >{{item.realname}}</el-button>
+              <el-dialog title="智能分析" :visible.sync="centerDialogVisible2" width="40%" center>
+                <div style="text-align:center">
+                  <h2 style="font-family:'PingFang SC';font-size:20px">{{analyzeData[0].realname}}</h2>
+                </div>
+                <div style="width:90%;margin:0 auto;margin-top:30px;margin-bottom:20px">
+                  <el-input
+                    type="textarea"
+                    :autosize="{ minRows: 4, maxRows: 8}"
+                    placeholder="请输入一段内容"
+                    v-model="textarea2"
+                    style="border:none !important"
+                  >
+                  </el-input>
+                  <el-button type="primary" style="margin-top:5px;" @click="realAnalyze">分析</el-button>
+                </div>
+                <div class="analyzeData" style="width:90%;margin:0 auto;min-height:120px;max-height:300px;overflow-y:scroll;box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);" v-html="realAnalyze1.segmentation">
+                   {{realAnalyze1.segmentation}}
+                </div>
+              </el-dialog>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </el-card>
   </div>
 </template>
 <script>
@@ -59,26 +126,26 @@ export default {
   data() {
     return {
       centerDialogVisible1: false,
-      timeurl:"",
-      newdate:[
+      centerDialogVisible2: false,
+      textarea2:"",
+      timeurl: "http://192.168.100.41:8772/searchPage/newWord",
+      newdate: [
         {
-          time:"本日",
-          timeType:"day"
+          time: "本日",
+          timeType: "day"
         },
         {
-          time:"本周",
-          timeType:"week"
+          time: "本周",
+          timeType: "week"
         },
         {
-          time:"本月",
-          timeType:"month"
-        },
-      ],
-      neologism:
-        {
-        data:['wowowowow','wowowowow','wowowowow','wowowowow','wowowowow','wowowowow','wowowowow','wowowowow',]
+          time: "本月",
+          timeType: "month"
         }
-        ,
+      ],
+      neologism: {
+        data: []
+      },
       rankrealData: [
         {
           title: "按访问区域",
@@ -173,7 +240,32 @@ export default {
             }
           ]
         }
-      ]
+      ],
+      analyze: [
+        {
+          realname: "分词抽取",
+          sendname: "abstract"
+        },
+        {
+          realname: "关键词抽取",
+          sendname: "keyword"
+        },
+        {
+          realname: "摘要抽取",
+          sendname: "abstract"
+        },
+        {
+          realname: "实体抽取",
+          sendname: "entity"
+        },
+      ],
+      analyzeData: [
+        {
+          realname: "",
+          sendname: ""
+        }
+      ],
+      realAnalyze1:""
     };
   },
   methods: {
@@ -199,20 +291,43 @@ export default {
       });
       window.open(routeUrl2.href, "_blank");
     },
-    gettimedate(event){
-      let target = event.currentTarget 
-      let timeType = target.getAttribute("data-id")
-      let time = target.getAttribute("id")
-      let data1={time:time,recommendType:timeType};
-       this.$ajax
-          .post(this.timeurl, data1)
-          .then(res => {
-            this.neologism = res.data
-            console.log(neologism)
-          })
-          .catch(res => {
-            console.log(res);
-          });
+    gettimedate(event) {
+      let target = event.currentTarget;
+      let timeType = target.getAttribute("data-id");
+      let time = target.getAttribute("id");
+      let data1 = {
+        userName: "小明",
+        userID: 110000,
+        timeName: time,
+        timeType: timeType
+      };
+      this.$ajax
+        .post(this.timeurl, data1)
+        .then(res => {
+          this.neologism = res.data;
+        })
+        .catch(res => {
+          console.log(res);
+        });
+    },
+    analyze1(event) {
+      let target = event.currentTarget;
+      let realname = target.getAttribute("data-id");
+      let sendname = target.getAttribute("id");
+      this.analyzeData[0].realname = realname;
+      this.analyzeData[0].sendname = sendname;
+    },
+    realAnalyze(){
+      let data1 = {text:this.textarea2}
+      this.$ajax
+        .post('http://192.168.100.41:80/ds/segmentation', data1)
+        .then(res => {
+          this.realAnalyze1 = res.data;
+          console.log(this.realAnalyze1)
+        })
+        .catch(res => {
+          console.log(res);
+        });
     }
   }
 };
@@ -276,14 +391,44 @@ export default {
   font-family: Calibri, "\5B8B\4F53";
   letter-spacing: 1px;
 }
-.dataspan{
+
+.dataspan span {
   font-size: 14px;
-display: inline-block;
-margin-right: 5px;
-margin-bottom: 10px;
-background: #F1F1F1;
-text-decoration: none;
-color: #333;
-padding: 5px;
+  display: inline-block;
+  margin-right: 5px;
+  margin-bottom: 10px;
+  background: #f1f1f1;
+  text-decoration: none;
+  color: #333;
+  padding: 5px;
+}
+.xinci th {
+  line-height: 30px;
+  border-bottom: solid 1px #f1eeee;
+  color: #999;
+}
+.xinci tr {
+  line-height: 30px;
+  border-bottom: solid 1px #f2f2f5;
+  color: #999;
+}
+.xinci tr td span {
+  font-size: 14px;
+  display: inline-block;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  background: #f1f1f1;
+  text-decoration: none;
+  color: #333;
+  padding: 3px;
+  margin-top: 5px;
+}
+.analyzeData span:nth-child(odd){
+  margin:0 5px;
+  color:red;
+}
+.analyzeData span:nth-child(even){
+  margin:0 3px;
+  color:blue;
 }
 </style>

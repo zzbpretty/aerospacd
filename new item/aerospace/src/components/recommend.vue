@@ -145,7 +145,6 @@ export default {
           .post(this.idurl, data1)
           .then(res => {
             this.afteruser = res.data
-            console.log(this.afteruser)
           })
           .catch(res => {
             console.log(res);
@@ -216,11 +215,12 @@ export default {
 .el-dialog__header{
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
+  padding-bottom: 15px;
   background: #4286ec;
 }
 .el-dialog__title{
   font-family: "Microsoft YaHei","微软雅黑";
-  color: #97e079;
+  color: #ffffff;
   font-weight: 800;
   font-size: 20px;
 }

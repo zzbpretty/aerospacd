@@ -3,14 +3,16 @@
       <!-- 头部logo -->
       <div class="re-top">
          <h1 class="re-logo">
+           <router-link to="/">
            <img src="../assets/img/hangtianlogo2.jpg" alt="">
+           </router-link>
          </h1>
       </div>
       <!-- 注册 -->
       <div class="re-main">
           <div class="main-left">
               <div class="overall">会员注册</div>
-            <el-tabs type="border-card">
+            <el-tabs class="register-tabs" type="border-card">
               <el-tab-pane label="手机号注册">
                 <!-- 手机号注册 -->
                 <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
@@ -682,7 +684,7 @@ img {
 .login-block-shade:hover{
     background:url('../assets/img/hover.jpg')
 }
-.el-tabs{
+.register-tabs{
     margin: 10px 25px 10px 0px;
     height: 450px;
 }
