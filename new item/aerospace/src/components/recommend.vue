@@ -1,48 +1,5 @@
 <template>
-  <div>
-    <!-- 精准推荐 -->
-    <div class="recommend">精准推荐</div>
-    <el-card class="box-card">
-      <div  class="text item">
-        <h4 style="border-bottom:1px solid black;padding-bottom:15px;color:#666;padding-left:10px">用户名:</h4>
-        <ul class="jingzhun" style="margin-top:10px">
-         <li v-for="(item,index) in frontuser" :key="index" style="width:180px;height:40px">
-            <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" style="float:left"></el-avatar>
-            <div style="float:left;margin-left:20px;">
-              <el-button type="text" @click="getusername($event);centerDialogVisible = true" style="font-size:14px" :data-id='item.userName' :id='item.userId'>{{item.userName}}</el-button> 
-              <el-dialog
-                 title="用户信息"
-                 :visible.sync="centerDialogVisible"
-                 width="30%"
-                 center>
-                 <div style="margin:16px 0">
-                   尊敬的<span style="color:red">{{afteruser.userName}}</span>用户，您好!
-                 </div>
-                 <h2>根据您近期的搜索记录，为您精准推荐：</h2>
-                 <div class="data" style="padding:20px">
-                 <table style="table-layout: fixed;border-collapse: collapse;border-spacing: 0;">
-                   <thead>
-                      <tr class="thead_tr">
-                         <th class="th-01" style="width:100px;text-align:center">序号</th>
-                         <th class="th-02" style="width:200px;text-align:left">关键词</th>
-                         <th class="th-03" style="width:150px;text-align:center">次数</th>
-                      </tr>
-                   </thead>
-                  <tbody>
-                    <tr class="tbody_tr" v-for="(item1,index) in afteruser.recommendResult" :key='index'>
-                      <td style="width:100px;text-align:center;color: #f26d5f;font-size:16px">{{index+1}}</td>
-                      <td style="width:200px;text-align:left;color:#0078b6;font-size:16px"  @click="tolist($event)" :data-id='item1.value'>{{item1.value}}</td>
-                      <td style="width:150px;text-align:center;color:#0078b6;font-size:16px" >{{item1.count}}</td>
-                    </tr>
-                  </tbody>
-                 </table>
-                 </div>
-                 </el-dialog>
-            </div>
-          </li>
-        </ul>
-      </div>
-    </el-card>
+  <div>   
     <!-- 为你推荐 -->
     <div class="recommend">为你推荐</div>
     <el-card class="box-card">
@@ -59,26 +16,7 @@
 export default {
   data() {
     return {
-      frontuser:[{
-             userName:'小明',
-             userId:"110000",
-            },{
-             userName:'安东',
-             userId:"310000",
-            },{
-             userName:'Alice',
-             userId:"440000",
-            },{
-             userName:'Jack',
-             userId:"320000",
-            },{
-             userName:'小李',
-             userId:"330000",
-            },
-               ],
-      afteruser:[],
-      idurl:'http://192.168.100.41:8772/searchPage/recommendResult',
-      centerDialogVisible: false,
+      
       recommendData: [
         {
           title: "航天12院",
@@ -127,29 +65,7 @@ export default {
    
   },
   methods:{
-      tolist(event) {
-      let target = event.target || window.event.srcElement;
-      let abstracthref= this.$router.resolve({
-        path: "/list",
-        query: { keyword: target.getAttribute("data-id"),label:"全文",value:"all" }
-      });
-      window.open(abstracthref.href,'_blank')
-    },
-    getusername(event){
       
-      let target = event.currentTarget 
-      let name = target.getAttribute("data-id")
-      let id = target.getAttribute("id")
-      let data1={userName:name,userId:id,recommendType:'realTime'};
-      this.$ajax
-          .post(this.idurl, data1)
-          .then(res => {
-            this.afteruser = res.data
-          })
-          .catch(res => {
-            console.log(res);
-          });
-    }
   }
 };
 </script>

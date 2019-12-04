@@ -13,19 +13,19 @@
               <span>AIAA：</span> 博士X篇；硕士X余篇
             </li>
             <li>
-              <span>EI：</span> 中国专利X项；海外专利X项
+              <span>EI：</span> 中国专利0项；海外专利0项
             </li>
             <li>
-              <span>专利：</span> 国内X篇；国际会议X篇
+              <span>专利：</span> 国内0篇；国际会议0篇
             </li>
             <li style="border-bottom:1px solid;padding-bottom:20px;margin-bottom:20px">
               <span>专业网站：</span> 3.1万余篇
             </li>
             <li>
-              <span>年鉴：</span> X篇
+              <span>年鉴：</span> 0篇
             </li>
             <li>
-              <span>专利：</span> 中国专利X项；海外专利X项
+              <span>专利：</span> 中国专利0项；海外专利0项
             </li>
 
           </ul>

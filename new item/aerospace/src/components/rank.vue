@@ -1,5 +1,51 @@
 <template>
   <div>
+    <!-- 智能分析 -->
+    <div class="recommend">智能分析</div>
+    <el-card class="box-card">
+      <div class="text item" style="padding-top:0px">
+        <ul class="jingzhun" style="margin-top:10px">
+          <li
+            v-for="(item,index) in analyze"
+            :key="index"
+            style="width:180px;height:30px;font-size:16px"
+          >
+            <div style>
+              <el-button
+                type="text"
+                @click="analyze1($event);centerDialogVisible2 = true"
+                style="font-size:14px"
+                :data-id="item.realname"
+                :id="item.sendname"
+              >{{item.realname}}</el-button>
+              <el-dialog title="智能分析" :visible.sync="centerDialogVisible2" width="40%" center>
+                <div style="text-align:center">
+                  <h2 style="font-family:'PingFang SC';font-size:20px">{{analyzeData_realname}}</h2>
+                </div>
+                <div style="width:88%;margin:0 auto;margin-top:30px;margin-bottom:25px;text-align:right">
+                  <el-input
+                    type="textarea"
+                    :autosize="{ minRows: 4, maxRows: 8}"
+                    placeholder="请输入一段内容"
+                    v-model="textarea2"
+                    style="border:none !important"
+                  >
+                  </el-input>
+                  <el-button type="primary" style="margin-top:10px;" @click="realAnalyze">分析</el-button>
+                </div>
+                <div class="analyzeData" style="width:90%;margin:0 auto;min-height:120px;max-height:300px;overflow-y:scroll;box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);">
+                   <span  v-for="(item,index) in realAnalyzeData.segmentation" v-html="item" :key="index" v-show="!(analyzeData_sendname == 'keySentence')">{{item}}</span>
+                  <ul class="keysentence" v-if="analyzeData_sendname == 'keySentence'">
+                       <li v-for="(item,index) in realAnalyzeData.segmentation" v-html="item" :key="index" >{{item}}</li>
+                   </ul>
+                </div>
+              </el-dialog>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </el-card>
+    <!-- 新词发现 -->
     <div class="recommend">新词发现</div>
     <el-card class="box-card">
       <div class="text item" style="padding-top:0px">
@@ -37,8 +83,8 @@
                         >{{item.conTime}}</td>
                         <td
                           style="width:300px;text-align:left;color:#0078b6;font-size:16px"
-                          v-html="item.newEntity"
-                        >{{item.newEntity}}</td>
+                          
+                        ><span v-for="(item1,index) in item.newEntity" :key="index" v-html="item1">{{item1}}</span></td>
                       </tr>
                     </tbody>
                   </table>
@@ -49,8 +95,75 @@
         </ul>
       </div>
     </el-card>
-    <div class="recommend">知识图谱</div>
-    <el-card class="box-card"></el-card>
+    <!-- 知识图谱 -->
+    <div class="recommend"><span>知识图谱</span></div>
+    <!-- 用户画像 -->
+    <div class="recommend"><el-button type="text" @click="centerDialogVisible3 = true;getbingtu()">用户画像</el-button></div>
+    <div v-show="centerDialogVisible3" @click="centerDialogVisible3 = false" style="position:fixed;width:100%;height:100%;background:#000;left:0;top:0;z-index:2000;opacity:0.5"></div>
+    <div v-show="centerDialogVisible3" style="position:fixed;width:90%;min-height:65%;background:#fff;left:50%;top:15%;margin-left:-45%;z-index:2001;border-radius:10px">
+      <div class="hauxiang-head" style="position:relative;padding: 20px 20px 10px;text-align: center;padding-bottom: 15px;background: #4286ec;width:100%;height:60px;box-sizing:border-box;border-top-left-radius: 10px;border-top-right-radius: 10px;">
+         <span style="font-family:'Microsoft YaHei','\5FAE\8F6F\96C5\9ED1';color: #ffffff;font-weight: 800;font-size: 20px;">用户画像</span>
+         <i class="el-dialog__close el-icon el-icon-close" style="position:absolute;right:30px;top:42%;cursor:pointer;font-size:16px" @click="centerDialogVisible3 = false"></i>
+      </div>
+      <div class="huaxiang" style="padding:10px 20px">
+        <div class="huaxiangitem" style="width:297px;height:300px">
+
+        </div>
+       <div class="huaxiangitem" style="width:297px;height:300px">
+
+        </div>
+        <div class="huaxiangitem" style="width:297px;height:300px">
+
+        </div>
+        <div class="huaxiangitem" style="width:297px;height:300px">
+
+        </div>
+        <div class="huaxiangitem" style="width:297px;height:300px">
+
+        </div>
+        <div class="huaxiangitem" style="width:297px;height:300px">
+
+        </div>
+        <div class="huaxiangitem" style="width:297px;height:300px">
+
+        </div>
+        <div class="huaxiangitem" style="width:297px;height:300px">
+
+        </div>
+        <div class="huaxiangitem" style="width:297px;height:300px">
+
+        </div>
+        <div class="huaxiangitem" style="width:297px;height:300px">
+
+        </div>
+
+      </div>
+    </div>
+    <!-- 精准推荐 -->
+    <div class="recommend"><el-button type="text" @click="centerDialogVisible = true">精准推荐</el-button></div>
+    <el-dialog title="精准推荐"  :visible.sync="centerDialogVisible" width="45%" center>
+                 <div class="data" style="padding:20px">
+                 <table style="table-layout: fixed;border-collapse: collapse;border-spacing: 0;">
+                   <thead>
+                      <tr class="thead_tr">
+                         <th class="th-01" style="width:50px;text-align:center">序号</th>
+                         <th class="th-02" style="width:100px;text-align:center">姓名</th>
+                         <th class="th-03" style="width:400px;text-align:center">常搜关键词</th>
+                      </tr>
+                   </thead>
+                  <tbody>
+                    <tr class="tbody_tr" v-for="(item,index) in afteruser" :key="index">
+                      <td style="width:100px;text-align:center;color: #f26d5f;font-size:16px">{{index+1}}</td>
+                      <td style="width:120px;text-align:center;color:#0078b6;font-size:16px"   >{{item.userName}}</td>
+                      <td style="width:520px;text-align:left;color:#0078b6;font-size:16px" >
+                        <span v-for="(item1,index) in item.recommendResult" :key="index" :data-id='item1.value' @click="topre_rec($event)" style="cursor:pointer">{{item1.value}}&ensp;</span>
+                      </td>
+                    </tr>
+                  </tbody>
+                 </table>
+                 </div>
+      </el-dialog>
+    <!-- 实时大数据分析 -->
     <div class="recommend">实时大数据分析</div>
     <el-card class="box-card">
       <div
@@ -77,58 +190,54 @@
         >{{item1.title}}</div>
       </div>
     </el-card>
-    <!-- 智能分析 -->
-    <div class="recommend">智能分析</div>
-    <el-card class="box-card">
-      <div class="text item" style="padding-top:0px">
-        <ul class="jingzhun" style="margin-top:10px">
-          <li
-            v-for="(item,index) in analyze"
-            :key="index"
-            style="width:180px;height:30px;font-size:16px"
-          >
-            <div style>
-              <el-button
-                type="text"
-                @click="analyze1($event);centerDialogVisible2 = true"
-                style="font-size:14px"
-                :data-id="item.realname"
-                :id="item.sendname"
-              >{{item.realname}}</el-button>
-              <el-dialog title="智能分析" :visible.sync="centerDialogVisible2" width="40%" center>
-                <div style="text-align:center">
-                  <h2 style="font-family:'PingFang SC';font-size:20px">{{analyzeData[0].realname}}</h2>
-                </div>
-                <div style="width:90%;margin:0 auto;margin-top:30px;margin-bottom:20px">
-                  <el-input
-                    type="textarea"
-                    :autosize="{ minRows: 4, maxRows: 8}"
-                    placeholder="请输入一段内容"
-                    v-model="textarea2"
-                    style="border:none !important"
-                  >
-                  </el-input>
-                  <el-button type="primary" style="margin-top:5px;" @click="realAnalyze">分析</el-button>
-                </div>
-                <div class="analyzeData" style="width:90%;margin:0 auto;min-height:120px;max-height:300px;overflow-y:scroll;box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);" v-html="realAnalyze1.segmentation">
-                   {{realAnalyze1.segmentation}}
-                </div>
-              </el-dialog>
-            </div>
-          </li>
-        </ul>
-      </div>
-    </el-card>
   </div>
 </template>
 <script>
+
+import echarts from 'echarts'
+require('echarts/lib/chart/pie')
+require('echarts/lib/component/tooltip')
+require('echarts/lib/component/title')
+
 export default {
   data() {
     return {
+      frontuser:[{
+             userName:'小明',
+             userId:"110000",
+            },{
+             userName:'安东',
+             userId:"310000",
+            },{
+             userName:'Alice',
+             userId:"440000",
+            },{
+             userName:'Jack',
+             userId:"320000",
+            },{
+             userName:'小李',
+             userId:"330000",
+            },
+               ],
+      afteruser:[],
+      bingtu0:"",
+      bingtu1:"",
+      bingtu2:"",
+      bingtu3:"",
+      bingtu4:"",
+      bingtu5:"",
+      bingtu6:"",
+      bingtu7:"",
+      bingtu8:"",
+      bingtu9:"",
+      idurl:'http://192.168.100.41:8772/searchPage/recommendResult',
+      centerDialogVisible: false,
       centerDialogVisible1: false,
       centerDialogVisible2: false,
+      centerDialogVisible3:false,
       textarea2:"",
       timeurl: "http://192.168.100.41:8772/searchPage/newWord",
+      analyzeurl:"",
       newdate: [
         {
           time: "本日",
@@ -148,93 +257,93 @@ export default {
       },
       rankrealData: [
         {
-          title: "按访问区域",
+          title: "区域热点分析",
           con_title: "ipRank"
         },
         {
-          title: "按访问请求状态",
+          title: "状态热点分析",
           con_title: "stateRank"
         },
         {
-          title: "按搜索来源",
+          title: "来源热点分析",
           con_title: "fromRank"
         },
         {
-          title: "按页面点击",
+          title: "内容热点分析",
           con_title: "contentRank"
         }
       ],
       rankhistoryData: [
         {
-          name: "按日排序",
+          name: "日热点分析",
           data: [
             {
-              title: "按访问区域",
+              title: "区域热点分析",
               con_title: "ipRank",
               con_method: "day"
             },
             {
-              title: "按访问请求状态",
+              title: "状态热点分析",
               con_title: "stateRank",
               con_method: "day"
             },
             {
-              title: "按搜索来源",
+              title: "来源热点分析",
               con_title: "fromRank",
               con_method: "day"
             },
             {
-              title: "按页面点击",
+              title: "内容热点分析",
               con_title: "contentRank",
               con_method: "day"
             }
           ]
         },
         {
-          name: "按周排序",
+          name: "周热点分析",
           data: [
             {
-              title: "按访问区域",
+              title: "区域热点分析",
               con_title: "ipRank",
               con_method: "week"
             },
             {
-              title: "按访问请求状态",
+              title: "状态热点分析",
               con_title: "stateRank",
               con_method: "week"
             },
             {
-              title: "按搜索来源",
+              title: "来源热点分析",
               con_title: "fromRank",
               con_method: "week"
             },
             {
-              title: "按页面点击",
+              title: "内容热点分析",
               con_title: "contentRank",
               con_method: "week"
             }
           ]
         },
         {
-          name: "按月排序",
+          name: "月热点分析",
           data: [
             {
-              title: "按访问区域",
+              title: "区域热点分析",
               con_title: "ipRank",
               con_method: "month"
             },
             {
-              title: "按访问请求状态",
+              title: "状态热点分析",
               con_title: "stateRank",
               con_method: "month"
             },
             {
-              title: "按搜索来源",
+              title: "来源热点分析",
               con_title: "fromRank",
               con_method: "month"
             },
             {
-              title: "按页面点击",
+              title: "内容热点分析",
               con_title: "contentRank",
               con_method: "month"
             }
@@ -244,30 +353,59 @@ export default {
       analyze: [
         {
           realname: "分词抽取",
-          sendname: "abstract"
+          sendname: "segmentation"
         },
         {
           realname: "关键词抽取",
-          sendname: "keyword"
+          sendname: "keyWord"
         },
         {
           realname: "摘要抽取",
-          sendname: "abstract"
+          sendname: "keySentence"
         },
         {
           realname: "实体抽取",
           sendname: "entity"
         },
       ],
-      analyzeData: [
-        {
-          realname: "",
-          sendname: ""
-        }
-      ],
-      realAnalyze1:""
+      analyzeData_realname:"",
+      analyzeData_sendname:"",
+      realAnalyzeData:[]
     };
   },
+  created(){
+      let data1={userName:'小明',userId:110000,recommendType:'realTime'};
+      let data2={userName:'安东',userId:310000,recommendType:'realTime'};
+      let data3={userName:'Alice',userId:440000,recommendType:'realTime'};
+      let data4={userName:'Jack',userId:320000,recommendType:'realTime'};
+      let data5={userName:'小李',userId:330000,recommendType:'realTime'};
+      this.$ajax.post(this.idurl, data1).then(res => {
+            this.afteruser.push(res.data)
+          }).catch(res => {
+            console.log(res);
+          });
+      this.$ajax.post(this.idurl, data2).then(res => {
+            this.afteruser.push(res.data)
+          }).catch(res => {
+            console.log(res);
+          });
+      this.$ajax.post(this.idurl, data3).then(res => {
+            this.afteruser.push(res.data)
+          }).catch(res => {
+            console.log(res);
+          });
+      this.$ajax.post(this.idurl, data4).then(res => {
+            this.afteruser.push(res.data)
+          }).catch(res => {
+            console.log(res);
+          });
+      this.$ajax.post(this.idurl, data5).then(res => {
+            this.afteruser.push(res.data)
+             console.log(this.afteruser)
+          }).catch(res => {
+            console.log(res);
+          });
+    },
   methods: {
     submitrank(event) {
       let target = event.target || window.event.srcElement;
@@ -305,29 +443,489 @@ export default {
         .post(this.timeurl, data1)
         .then(res => {
           this.neologism = res.data;
+          console.log(this.neologism)
         })
         .catch(res => {
           console.log(res);
         });
     },
     analyze1(event) {
+      this.textarea2 = ""
+      this.realAnalyzeData=[]
       let target = event.currentTarget;
-      let realname = target.getAttribute("data-id");
-      let sendname = target.getAttribute("id");
-      this.analyzeData[0].realname = realname;
-      this.analyzeData[0].sendname = sendname;
+      this.analyzeData_realname = target.getAttribute("data-id");
+      this.analyzeData_sendname = target.getAttribute("id");
+      // console.log(this.analyzeData_sendname)
     },
     realAnalyze(){
       let data1 = {text:this.textarea2}
+      this.analyzeurl = ""
+      // console.log(this.analyzeData_sendname)
+      if(this.analyzeData_sendname == "segmentation"){
+        this.analyzeurl = "segmentation"
+      }else if(this.analyzeData_sendname == "keyWord"){
+        this.analyzeurl = "keyWord"
+      }else if(this.analyzeData_sendname == "keySentence"){
+        this.analyzeurl = "keySentence"
+      }else{
+        this.analyzeurl = "entity"
+      }
+      // console.log(this.analyzeurl)
       this.$ajax
-        .post('http://192.168.100.41:80/ds/segmentation', data1)
+        .post('http://192.168.100.41:80/ds/' + this.analyzeurl, data1)
         .then(res => {
-          this.realAnalyze1 = res.data;
-          console.log(this.realAnalyze1)
+          this.realAnalyzeData = res.data;
+          // console.log(this.realAnalyzeData)
         })
         .catch(res => {
           console.log(res);
         });
+    },
+    topre_rec(event) {
+      let target = event.target || window.event.srcElement;
+      let abstracthref= this.$router.resolve({
+        path: "/list/precise_recommend",
+        query: { keyword: target.getAttribute("data-id"),label:"全文",value:"all" }
+      });
+      window.open(abstracthref.href,'_blank')
+    },
+    // 画饼图
+    getbingtu(){
+      // 基于准备好的dom，初始化echarts实例
+      
+      this.bingtu0 = echarts.init(document.getElementsByClassName('huaxiangitem')[0]);
+      this.bingtu1 = echarts.init(document.getElementsByClassName('huaxiangitem')[1]);
+      this.bingtu2 = echarts.init(document.getElementsByClassName('huaxiangitem')[2]);
+      this.bingtu3 = echarts.init(document.getElementsByClassName('huaxiangitem')[3]);
+      this.bingtu4 = echarts.init(document.getElementsByClassName('huaxiangitem')[4]);
+
+      // 绘制图表
+      this.chartOption0 = {
+          title : {
+              text: this.afteruser[0].userName,//主标题
+              subtext: '',//副标题
+              x:'center',//x轴方向对齐方式
+              left:0,
+              top:0
+          },
+          tooltip : {
+              trigger: 'item',
+              formatter (params, ticket, callback) { 
+              // params.data 就是series配置项中的data数据遍历
+              let name,value
+              if (params.data) {
+                 name = params.data.name
+                 value = params.data.value
+                 
+              } else { // 为了防止没有定义数据的时候报错写的
+               name = 0
+               value = 0
+               
+              }
+
+               let htmlStr = `
+               <div style='font-size:18px;margin-bottom:10px;'> ${name}</div>
+               <p style='text-align:left;margin-top:-10px;'>
+               搜索次数：${value}<br/>
+               </p>`
+        
+                return htmlStr
+          }
+          },
+          legend: {
+              orient: 'vertical',
+              right: 'right',
+              width:'200px',
+              top: '150px',
+              data:[],
+              itemWidth: 24,   // 设置图例图形的宽
+              formatter:  (name)=> {
+               return name
+               },
+             
+          },
+          series : [
+              {
+                  name: '',
+                  type: 'pie',
+                  radius:['0%','50%'],
+                  center: ['30%', '40%'],
+                  data:[],
+                  itemStyle: {
+                      emphasis: {
+                          shadowBlur: 20,
+                          shadowOffsetX: 50,
+                          shadowColor: 'rgba(0, 0, 0, 0.5)'
+                      }
+                  },
+                  labelLine: {
+                normal: {
+                  show: false   // show设置线是否显示，默认为true，可选值：true ¦ false
+                }
+              },
+              label: {
+                normal: {
+                  position: 'inner',  // 设置标签位置，默认在饼状图外 可选值：'outer' ¦ 'inner（饼状图上）'
+                  // formatter: '{a} {b} : {c}个 ({d}%)'   设置标签显示内容 ，默认显示{b}
+                  // {a}指series.name  {b}指series.data的name
+                  // {c}指series.data的value  {d}%指这一部分占总数的百分比
+                  formatter: '{c}次'
+                }
+              }
+
+              }
+          ],
+      };
+      
+      for(let i =0;i<this.afteruser.length;i++){   
+        this.chartOption0.series[0].data.push({name:this.afteruser[0].recommendResult[i].value,value:this.afteruser[0].recommendResult[i].count})
+        this.chartOption0.legend.data.push(this.afteruser[0].recommendResult[i].value)
+      }
+
+      // 绘制图表
+      this.chartOption1 = {
+          title : {
+              text: this.afteruser[1].userName,//主标题
+              subtext: '',//副标题
+              x:'center',//x轴方向对齐方式
+              left:0,
+              top:0
+          },
+          tooltip : {
+              trigger: 'item',
+              formatter (params, ticket, callback) { 
+              // params.data 就是series配置项中的data数据遍历
+              let name,value
+              if (params.data) {
+                 name = params.data.name
+                 value = params.data.value
+                 
+              } else { // 为了防止没有定义数据的时候报错写的
+               name = 0
+               value = 0
+               
+              }
+
+               let htmlStr = `
+               <div style='font-size:18px;margin-bottom:10px;'> ${name}</div>
+               <p style='text-align:left;margin-top:-10px;'>
+               搜索次数：${value}<br/>
+               </p>`
+        
+                return htmlStr
+          }
+          },
+          legend: {
+              orient: 'vertical',
+              right: 'right',
+              width:'200px',
+              top: '150px',
+              data:[],
+              itemWidth: 24,   // 设置图例图形的宽
+              formatter:  (name)=> {
+               return name
+               },
+             
+          },
+          series : [
+              {
+                  name: '',
+                  type: 'pie',
+                  radius:['0%','50%'],
+                  center: ['30%', '40%'],
+                  data:[],
+                  itemStyle: {
+                      emphasis: {
+                          shadowBlur: 20,
+                          shadowOffsetX: 50,
+                          shadowColor: 'rgba(0, 0, 0, 0.5)'
+                      }
+                  },
+                  labelLine: {
+                normal: {
+                  show: false   // show设置线是否显示，默认为true，可选值：true ¦ false
+                }
+              },
+              label: {
+                normal: {
+                  position: 'inner',  // 设置标签位置，默认在饼状图外 可选值：'outer' ¦ 'inner（饼状图上）'
+                  // formatter: '{a} {b} : {c}个 ({d}%)'   设置标签显示内容 ，默认显示{b}
+                  // {a}指series.name  {b}指series.data的name
+                  // {c}指series.data的value  {d}%指这一部分占总数的百分比
+                  formatter: '{c}次'
+                }
+              }
+
+              }
+          ],
+      };
+      
+      for(let i =0;i<this.afteruser.length;i++){   
+        this.chartOption1.series[0].data.push({name:this.afteruser[1].recommendResult[i].value,value:this.afteruser[1].recommendResult[i].count})
+        this.chartOption1.legend.data.push(this.afteruser[1].recommendResult[i].value)
+      }
+     
+
+     // 绘制图表
+      this.chartOption2 = {
+          title : {
+              text: this.afteruser[2].userName,//主标题
+              subtext: '',//副标题
+              x:'center',//x轴方向对齐方式
+              left:0,
+              top:0
+          },
+          tooltip : {
+              trigger: 'item',
+              formatter (params, ticket, callback) { 
+              // params.data 就是series配置项中的data数据遍历
+              let name,value
+              if (params.data) {
+                 name = params.data.name
+                 value = params.data.value
+                 
+              } else { // 为了防止没有定义数据的时候报错写的
+               name = 0
+               value = 0
+               
+              }
+
+               let htmlStr = `
+               <div style='font-size:18px;margin-bottom:10px;'> ${name}</div>
+               <p style='text-align:left;margin-top:-10px;'>
+               搜索次数：${value}<br/>
+               </p>`
+        
+                return htmlStr
+          }
+          },
+          legend: {
+              orient: 'vertical',
+              right: 'right',
+              width:'200px',
+              top: '150px',
+              data:[],
+              itemWidth: 24,   // 设置图例图形的宽
+              formatter:  (name)=> {
+               return name
+               },
+             
+          },
+          series : [
+              {
+                  name: '',
+                  type: 'pie',
+                  radius:['0%','50%'],
+                  center: ['30%', '40%'],
+                  data:[],
+                  itemStyle: {
+                      emphasis: {
+                          shadowBlur: 20,
+                          shadowOffsetX: 50,
+                          shadowColor: 'rgba(0, 0, 0, 0.5)'
+                      }
+                  },
+                  labelLine: {
+                normal: {
+                  show: false   // show设置线是否显示，默认为true，可选值：true ¦ false
+                }
+              },
+              label: {
+                normal: {
+                  position: 'inner',  // 设置标签位置，默认在饼状图外 可选值：'outer' ¦ 'inner（饼状图上）'
+                  // formatter: '{a} {b} : {c}个 ({d}%)'   设置标签显示内容 ，默认显示{b}
+                  // {a}指series.name  {b}指series.data的name
+                  // {c}指series.data的value  {d}%指这一部分占总数的百分比
+                  formatter: '{c}次'
+                }
+              }
+
+              }
+          ],
+      };
+      
+      for(let i =0;i<this.afteruser.length;i++){   
+        this.chartOption2.series[0].data.push({name:this.afteruser[2].recommendResult[i].value,value:this.afteruser[2].recommendResult[i].count})
+        this.chartOption2.legend.data.push(this.afteruser[2].recommendResult[i].value)
+      }
+     
+
+     // 绘制图表
+      this.chartOption3 = {
+          title : {
+              text: this.afteruser[3].userName,//主标题
+              subtext: '',//副标题
+              x:'center',//x轴方向对齐方式
+              left:0,
+              top:0
+          },
+          tooltip : {
+              trigger: 'item',
+              formatter (params, ticket, callback) { 
+              // params.data 就是series配置项中的data数据遍历
+              let name,value
+              if (params.data) {
+                 name = params.data.name
+                 value = params.data.value
+                 
+              } else { // 为了防止没有定义数据的时候报错写的
+               name = 0
+               value = 0
+               
+              }
+
+               let htmlStr = `
+               <div style='font-size:18px;margin-bottom:10px;'> ${name}</div>
+               <p style='text-align:left;margin-top:-10px;'>
+               搜索次数：${value}<br/>
+               </p>`
+        
+                return htmlStr
+          }
+          },
+          legend: {
+              orient: 'vertical',
+              right: 'right',
+              width:'200px',
+              top: '150px',
+              data:[],
+              itemWidth: 24,   // 设置图例图形的宽
+              formatter:  (name)=> {
+               return name
+               },
+             
+          },
+          series : [
+              {
+                  name: '',
+                  type: 'pie',
+                  radius:['0%','50%'],
+                  center: ['30%', '40%'],
+                  data:[],
+                  itemStyle: {
+                      emphasis: {
+                          shadowBlur: 20,
+                          shadowOffsetX: 50,
+                          shadowColor: 'rgba(0, 0, 0, 0.5)'
+                      }
+                  },
+                  labelLine: {
+                normal: {
+                  show: false   // show设置线是否显示，默认为true，可选值：true ¦ false
+                }
+              },
+              label: {
+                normal: {
+                  position: 'inner',  // 设置标签位置，默认在饼状图外 可选值：'outer' ¦ 'inner（饼状图上）'
+                  // formatter: '{a} {b} : {c}个 ({d}%)'   设置标签显示内容 ，默认显示{b}
+                  // {a}指series.name  {b}指series.data的name
+                  // {c}指series.data的value  {d}%指这一部分占总数的百分比
+                  formatter: '{c}次'
+                }
+              }
+
+              }
+          ],
+      };
+      
+      for(let i =0;i<this.afteruser.length;i++){   
+        this.chartOption3.series[0].data.push({name:this.afteruser[3].recommendResult[i].value,value:this.afteruser[3].recommendResult[i].count})
+        this.chartOption3.legend.data.push(this.afteruser[3].recommendResult[i].value)
+      }
+     
+
+     // 绘制图表
+      this.chartOption4 = {
+          title : {
+              text: this.afteruser[4].userName,//主标题
+              subtext: '',//副标题
+              x:'center',//x轴方向对齐方式
+              left:0,
+              top:0
+          },
+          tooltip : {
+              trigger: 'item',
+              formatter (params, ticket, callback) { 
+              // params.data 就是series配置项中的data数据遍历
+              let name,value
+              if (params.data) {
+                 name = params.data.name
+                 value = params.data.value
+                 
+              } else { // 为了防止没有定义数据的时候报错写的
+               name = 0
+               value = 0
+               
+              }
+
+               let htmlStr = `
+               <div style='font-size:18px;margin-bottom:10px;'> ${name}</div>
+               <p style='text-align:left;margin-top:-10px;'>
+               搜索次数：${value}<br/>
+               </p>`
+        
+                return htmlStr
+          }
+          },
+          legend: {
+              orient: 'vertical',
+              right: 'right',
+              width:'200px',
+              top: '150px',
+              data:[],
+              itemWidth: 24,   // 设置图例图形的宽
+              formatter:  (name)=> {
+               return name
+               },
+             
+          },
+          series : [
+              {
+                  name: '',
+                  type: 'pie',
+                  radius:['0%','50%'],
+                  center: ['30%', '40%'],
+                  data:[],
+                  itemStyle: {
+                      emphasis: {
+                          shadowBlur: 20,
+                          shadowOffsetX: 50,
+                          shadowColor: 'rgba(0, 0, 0, 0.5)'
+                      }
+                  },
+                  labelLine: {
+                normal: {
+                  show: false   // show设置线是否显示，默认为true，可选值：true ¦ false
+                }
+              },
+              label: {
+                normal: {
+                  position: 'inner',  // 设置标签位置，默认在饼状图外 可选值：'outer' ¦ 'inner（饼状图上）'
+                  // formatter: '{a} {b} : {c}个 ({d}%)'   设置标签显示内容 ，默认显示{b}
+                  // {a}指series.name  {b}指series.data的name
+                  // {c}指series.data的value  {d}%指这一部分占总数的百分比
+                  formatter: '{c}次'
+                }
+              }
+
+              }
+          ],
+      };
+      
+      for(let i =0;i<this.afteruser.length;i++){   
+        this.chartOption4.series[0].data.push({name:this.afteruser[4].recommendResult[i].value,value:this.afteruser[4].recommendResult[i].count})
+        this.chartOption4.legend.data.push(this.afteruser[4].recommendResult[i].value)
+      }
+     
+     
+
+        this.bingtu0.setOption(this.chartOption0)
+        this.bingtu1.setOption(this.chartOption1)
+        this.bingtu2.setOption(this.chartOption2)
+        this.bingtu3.setOption(this.chartOption3)
+        this.bingtu4.setOption(this.chartOption4)
+        
+      
     }
   }
 };
@@ -423,12 +1021,44 @@ export default {
   padding: 3px;
   margin-top: 5px;
 }
+.analyzeData{
+  padding:5px 10px;
+}
 .analyzeData span:nth-child(odd){
-  margin:0 5px;
   color:red;
+  margin-left:7px;
+  margin-right:7px;
 }
 .analyzeData span:nth-child(even){
-  margin:0 3px;
   color:blue;
+}
+.keysentence{
+  text-indent:2em;
+}
+.keysentence li {
+  margin:2px 0;
+  list-style:square !important;
+}
+.recommend span{
+  
+  font-weight: 700;
+  margin-bottom: 20px;
+  margin-top: 25px;
+  font-size: 18px;
+  color: #409EFF;
+}
+.huaxiang{
+  width: 1650px;
+  margin: 0 auto;
+  min-height: 550px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.huaxiangitem{
+  flex: 0 0 18%;
+  width: 320px;
+  min-height: 250px;
+  margin-bottom:10px;
 }
 </style>

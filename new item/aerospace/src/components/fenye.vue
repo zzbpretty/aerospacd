@@ -8,7 +8,7 @@
         <el-tab-pane label="列表">
           <el-table :data="tableData" style="width: 100%;text-align:center">
             <!-- <el-table-column prop={{con_title}}     label="题名" width="300" style="text-align:center"></el-table-column> -->
-            <el-table-column label="题名" width="300" style="text-align:center">
+            <el-table-column label="题名" width="300" style="text-align:left">
               <template slot-scope="scope">
                 <span
                   v-html="scope.row.con_title"
@@ -19,7 +19,7 @@
                 ></span>
               </template>
             </el-table-column>
-            <el-table-column prop="con_author" label="作者" width="150" style="text-align:center">
+            <el-table-column prop="con_author" label="作者" width="150" style="text-align:left">
               <template slot-scope="scope">
                 <span
                   v-html="scope.row.con_author"
@@ -168,7 +168,7 @@ export default {
         });
     },
     toabstract(event) {
-      let target = event.target || window.event.srcElement;
+      let target = event.currentTarget ;
       let abstracthref= this.$router.resolve({
         path: "/list/abstract",
         query: { con_title: target.getAttribute("data-id"),data_type:target.getAttribute("id") }
@@ -417,4 +417,8 @@ export default {
 .el-table .cell{
     word-break: normal;
 }
+.container-content tbody .el-table_1_column_1 .cell {
+  text-align:left
+}
+
 </style>

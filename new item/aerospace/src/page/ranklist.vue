@@ -38,22 +38,22 @@
         </el-tabs>
           
       </el-tab-pane>
-      <el-tab-pane label="按日排序" name="day">
-          <el-tabs type="border-card">
+      <el-tab-pane  label="按日排序" name="day">
+          <el-tabs v-model="activeTuTab" type="border-card">
           <!-- 地图 -->
-          <el-tab-pane v-if="this.$route.query.con_title == 'ipRank'" label="地图">
+          <el-tab-pane v-if="this.$route.query.con_title == 'ipRank'" label="地图" name="ditu">
              <div class="realmap" style="width:1200px;height:650px">
                 
              </div>
           </el-tab-pane>
           <!-- 饼图 -->
-          <el-tab-pane v-if="!(this.$route.query.con_title == 'ipRank')" label="饼图">
+          <el-tab-pane v-if="!(this.$route.query.con_title == 'ipRank')" label="饼图" name="bingtu">
              <div class="bingtu" style="width:1200px;height:650px">
                 
              </div>
           </el-tab-pane>
           <!-- 数据 -->
-          <el-tab-pane label="数据" class="dashuju">
+          <el-tab-pane label="数据" class="dashuju" name="shuju">
             <el-table ref="singleTable"  :data="rankData" highlight-current-row @current-change="handleCurrentChange"  style="width: 100%"> 
               <el-table-column  type="index" label="序号"  width="100"> </el-table-column>
               <el-table-column   :label=content  width="400" style="text-align:center"> 
@@ -70,22 +70,22 @@
           </el-tab-pane>
         </el-tabs>
       </el-tab-pane>
-      <el-tab-pane label="按周排序" name="week">
-         <el-tabs type="border-card">
+      <el-tab-pane  label="按周排序" name="week">
+         <el-tabs v-model="activeTuTab" type="border-card">
           <!-- 地图 -->
-          <el-tab-pane v-if="this.$route.query.con_title == 'ipRank'" label="地图">
+          <el-tab-pane v-if="this.$route.query.con_title == 'ipRank'" label="地图" name="ditu">
              <div class="realmap" style="width:1200px;height:650px">
                 
              </div>
           </el-tab-pane>
           <!-- 饼图 -->
-          <el-tab-pane v-if="!(this.$route.query.con_title == 'ipRank')" label="饼图">
+          <el-tab-pane v-if="!(this.$route.query.con_title == 'ipRank')" label="饼图" name="bingtu">
              <div class="bingtu" style="width:1200px;height:650px">
                 
              </div>
           </el-tab-pane>
           <!-- 数据 -->
-          <el-tab-pane label="数据" class="dashuju">
+          <el-tab-pane label="数据" class="dashuju" name="shuju">
             <el-table ref="singleTable"  :data="rankData" highlight-current-row @current-change="handleCurrentChange"  style="width: 100%"> 
               <el-table-column  type="index" label="序号"  width="100"> </el-table-column>
               <el-table-column   :label=content  width="400" style="text-align:center"> 
@@ -102,22 +102,22 @@
           </el-tab-pane>
         </el-tabs>
       </el-tab-pane>
-      <el-tab-pane label="按月排序" name="month">
-         <el-tabs type="border-card">
+      <el-tab-pane  label="按月排序" name="month">
+         <el-tabs v-model="activeTuTab" type="border-card">
           <!-- 地图 -->
-          <el-tab-pane v-if="this.$route.query.con_title == 'ipRank'" label="地图">
+          <el-tab-pane v-if="this.$route.query.con_title == 'ipRank'" label="地图" name="ditu">
              <div class="realmap" style="width:1200px;height:650px">
                 
              </div>
           </el-tab-pane>
           <!-- 饼图 -->
-          <el-tab-pane v-if="!(this.$route.query.con_title == 'ipRank')" label="饼图" >  
+          <el-tab-pane v-if="!(this.$route.query.con_title == 'ipRank')" label="饼图" name="bingtu">  
             <div class="bingtu" style="width:1200px;height:650px;">
                 
              </div>      
           </el-tab-pane>
           <!-- 数据 -->
-          <el-tab-pane label="数据" class="dashuju">
+          <el-tab-pane label="数据" class="dashuju" name="shuju">
             <el-table ref="singleTable"  :data="rankData" highlight-current-row @current-change="handleCurrentChange"  style="width: 100%"> 
               <el-table-column  type="index" label="序号"  width="100"> </el-table-column>
               <el-table-column   :label=content  width="400" style="text-align:center"> 
@@ -169,10 +169,10 @@ export default {
       chinachart1:"",
       chinachart2:"",
       chinachart3:"",
+      bingtu0:"",
       bingtu1:"",
       bingtu2:"",
-      bingtu3:"",
-      bingtu4:""
+      bingtu3:""
     };
   },
    methods:{
@@ -811,8 +811,8 @@ export default {
         {gt: 17, lte: 20, label: '访问次数极多', color: 'orangered'},
         {gt: 13, lte: 17, label: '访问次数很多', color: '#ff9800'}, 
         {gt: 7, lte: 13, label: '访问次数一般', color: '#ffeb3b'},
-        {gt: 3, lte: 7, label: '访问次数很少', color: '#9adcfa'}, 
-        {gt: 0, lte: 3, label: '访问次数极少', color: '#6ad86e'}, 
+        {gt: 3, lte: 7, label: '访问次数很少', color: '#6ad86e'}, 
+        {gt: 0, lte: 3, label: '访问次数极少', color: '#9adcfa'}, 
         {value: 0, label: '暂无数据', color: '#999'}, // [0]
       ]
       },
@@ -859,6 +859,7 @@ export default {
      }
     },
     
+    // 画饼图
     getbingtu(){
       if(this.$route.query.con_title != 'ipRank'){
       // 基于准备好的dom，初始化echarts实例
@@ -879,17 +880,17 @@ export default {
               trigger: 'item',
               formatter (params, ticket, callback) { 
               // params.data 就是series配置项中的data数据遍历
-              let name,value,rank,all
+              let name,value,rank
               if (params.data) {
                  name = params.data.name
-                 value = params.data.value
+                 value = Number(params.data.value)
                  rank = params.data.rank
-                 all = params.data.all
+                 
               } else { // 为了防止没有定义数据的时候报错写的
                name = ""
                value = 0
                rank = 0
-               all = 0
+               
               }
 
                let htmlStr = `
@@ -897,7 +898,7 @@ export default {
                <p style='text-align:left;margin-top:-10px;'>
                访问次数：${value}<br/>
                访问排名：${rank}<br/>
-               占比：${value/all}
+               
                </p>`
         
                 return htmlStr
@@ -937,12 +938,12 @@ export default {
               }
           ],
       };
-      let all
-      for(let i =0;i<this.rankData.length;i++){
-         all += Number(this.rankData[i].value);
-        this.chartOption1.series[0].data.push({name:this.rankData[i].value,value:this.rankData[i].count,rank:this.rankData[i].rank,all:all})
+      
+      for(let i =0;i<this.rankData.length;i++){   
+        this.chartOption1.series[0].data.push({name:this.rankData[i].value,value:this.rankData[i].count,rank:this.rankData[i].rank})
         this.chartOption1.legend.data.push(this.rankData[i].value)
       }
+     
 
         this.bingtu0.setOption(this.chartOption1)
         this.bingtu1.setOption(this.chartOption1)
@@ -960,19 +961,19 @@ export default {
     //修改页头标题
     if (this.$route.query.con_title=='ipRank'){
       this.content = "访问区域" 
-      this.ranktitle = "访问区域排序"
+      this.ranktitle = "区域热点分析"
       this.activeTuTab = "ditu"
       }else if(this.$route.query.con_title=='stateRank'){
       this.content = "访问请求状态"
-      this.ranktitle = "访问请求状态排序"
+      this.ranktitle = "状态热点分析"
       this.activeTuTab = "bingtu"
       }else if(this.$route.query.con_title=='fromRank'){
        this.content = "搜索来源"
-       this.ranktitle = "搜索来源排序"
+       this.ranktitle = "来源热点分析"
        this.activeTuTab = "bingtu"
       }else if(this.$route.query.con_title=='contentRank'){
       this.content = "页面点击"
-      this.ranktitle = "页面点击排序"
+      this.ranktitle = "内容热点分析"
       this.activeTuTab = "shuju"
       }
     //修改不同标题样式
@@ -1171,12 +1172,40 @@ export default {
   text-align: left;
   padding-left:15px;
 }
+.dashuju  .el-table__row:nth-child(-n+7)>td:nth-child(1){
+  color: #ff9800 ;
+  font-size: 18px
+} 
 .dashuju  .el-table__row:nth-child(-n+3)>td:nth-child(1){
-  color: red !important;
+  color: orangered;
+  font-size: 24px
+}
+.dashuju  .el-table__row:nth-child(n+8)>td:nth-child(1){
+  color: #ffaaab;
   font-size: 16px
 }
+.dashuju  .el-table__row:nth-child(n+14)>td:nth-child(1){
+  color: #6ad86e;
+  font-size: 14px
+}
 .dashuju  .el-table__row:nth-child(n+18)>td:nth-child(1){
-  color: rgb(22, 231, 22) !important;
-  font-size: 16px
+  color: #9adcfa ; 
+  font-size: 12px
+}
+
+.dashuju  .el-table__row:nth-child(-n+7)>td{
+  color: #ff9800 ;
+} 
+.dashuju  .el-table__row:nth-child(-n+3)>td{
+  color: orangered;
+}
+.dashuju  .el-table__row:nth-child(n+8)>td{
+  color: #ffaaab;
+}
+.dashuju  .el-table__row:nth-child(n+14)>td{
+  color: #6ad86e;
+}
+.dashuju  .el-table__row:nth-child(n+18)>td{
+  color: #9adcfa ; 
 }
 </style>

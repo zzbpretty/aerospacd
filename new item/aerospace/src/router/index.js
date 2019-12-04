@@ -20,6 +20,11 @@ const router = new Router({
       component: ()=>import ('../page/list.vue')
     },
     {
+      path: '/list/precise_recommend',
+      name: 'Precise_recommend',
+      component: ()=>import ('../page/precise_recommend.vue')
+    },
+    {
       path: '/login',
       name: 'Login',
       component: ()=>import ('../page/login.vue')

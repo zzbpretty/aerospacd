@@ -27,7 +27,8 @@
 
           <div class="dl_xunlei_tips">为了良好体验，不建议使用迅雷下载</div>
           <div class="resource_dl_btn">
-            <a download="this.$route.query.con_title+'.txt'" :href="'http://192.168.100.44:8070/search/context/'+ this.$route.query.con_title" class="dl_btn">立即下载</a>
+            <a v-if="(this.$route.query.data_type == 'html')"  :href="'http://192.168.100.44:8070/search/context/'+ this.$route.query.con_title" download="this.$route.query.con_title" class="dl_btn">立即下载</a>
+            <a v-else :href="'http://192.168.100.44:8070/search/downloadFile/'+ this.$route.query.con_title" download="this.$route.query.con_title" class="dl_btn">立即下载</a>
           </div>
         </div>
     </div>
@@ -87,7 +88,7 @@ export default {
     };
   },
 
-  create(){
+  created(){
     
   },
   methods:{
