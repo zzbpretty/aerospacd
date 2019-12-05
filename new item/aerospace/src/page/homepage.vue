@@ -1,4 +1,5 @@
 <template>
+<!-- 首页 -->
   <div class="backgound-home">
     <!-- header start -->
     <Header></Header>
@@ -40,7 +41,7 @@
    
     <!-- choose -->
     <!-- to top -->
-   
+    
     <!-- to top -->
     <Footer></Footer>
   </div>

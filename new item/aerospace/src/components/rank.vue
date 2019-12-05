@@ -34,9 +34,14 @@
                   <el-button type="primary" style="margin-top:10px;" @click="realAnalyze">分析</el-button>
                 </div>
                 <div class="analyzeData" style="width:90%;margin:0 auto;min-height:120px;max-height:300px;overflow-y:scroll;box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);">
-                   <span  v-for="(item,index) in realAnalyzeData.segmentation" v-html="item" :key="index" v-show="!(analyzeData_sendname == 'keySentence')">{{item}}</span>
+                   <span  v-for="(item,index) in realAnalyzeData.segmentation" v-html="item" :key="index" v-if="(analyzeData_sendname == 'segmentation')">{{item}}</span>
+                    <span  v-for="(item,index) in realAnalyzeData.keyWord" v-html="item" :key="index" v-if="(analyzeData_sendname == 'keyWord')">{{item}}</span>
+                     <span  v-for="(item,index) in realAnalyzeData.entity" v-html="item" :key="index" v-if="(analyzeData_sendname == 'entity')">{{item}}</span>
                   <ul class="keysentence" v-if="analyzeData_sendname == 'keySentence'">
-                       <li v-for="(item,index) in realAnalyzeData.segmentation" v-html="item" :key="index" >{{item}}</li>
+                       <li v-for="(item,index) in realAnalyzeData.keySentence" v-html="item" :key="index" >{{item}}</li>
+                   </ul>
+                   <ul class="keysentence" v-if="analyzeData_sendname == 'machineTranslation'">
+                       <li v-for="(item,index) in realAnalyzeData.machineTranslation" v-html="item" :key="index" >{{item}}</li>
                    </ul>
                 </div>
               </el-dialog>
@@ -63,17 +68,43 @@
                 :data-id="item.timeType"
                 :id="item.time"
               >{{item.time}}新词</el-button>
-              <el-dialog title="新词发现" :visible.sync="centerDialogVisible1" width="30%" center>
-                <h2>{{neologism.timeName}}发现的新词有：</h2>
+              <el-dialog title="新词发现" :visible.sync="centerDialogVisible1" width="40%" center>
+                <h2 v-if="(neologism.timeType == 'day'||neologism.timeType == 'week'||neologism.timeType == 'month')">{{neologism.timeName}}发现的新词有：</h2>
                 <!-- <div class="data" style="padding:20px">
                   <span class="dataspan" v-html="item.newEntity" v-for="(item,index) in neologism.newWord" :key="index">{{item.newEntity}}</span>
                 </div>-->
-                <div class="xinci" style="padding:20px">
+                <div class="xinci" style="padding:20px" v-if="(neologism.timeType == 'day'||neologism.timeType == 'week'||neologism.timeType == 'month')" >
                   <table>
                     <thead>
                       <tr style="margin:5px 0">
                         <th class="th-01" style="width:200px;text-align:center">时间</th>
-                        <th class="th-02" style="width:300px;text-align:left">新词</th>
+                        <th class="th-02" style="width:485px;text-align:left">新词</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr style v-for="(item,index) in neologism.newWord" :key="index">
+                        <td
+                          style="width:200px;text-align:center;color: #f26d5f;font-size:16px"
+                        >{{item.conTime}}</td>
+                        <td
+                          style="width:300px;text-align:left;color:#0078b6;font-size:16px" 
+                        ><span v-for="(item1,index) in item.newEntity" :key="index" v-html="item1">{{item1}}</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <!-- 自定义 -->
+                <!-- 日期 -->
+                <el-date-picker v-if="!(neologism.timeType == 'day'||neologism.timeType == 'week'||neologism.timeType == 'month')" style="margin-left:50px" v-model="value2" type="daterange" align="right"  value-format="yyyy-MM-dd" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions"> </el-date-picker>
+                <el-button type="primary" v-if="!(neologism.timeType == 'day'||neologism.timeType == 'week'||neologism.timeType == 'month')" plain style="margin-left:150px" @click="getzdyword()">搜索</el-button>
+
+                <div class="xinci" style="padding:20px" v-if="!(neologism.timeType == 'day'||neologism.timeType == 'week'||neologism.timeType == 'month')">
+                  <table>
+                    <thead>
+                      <tr style="margin:5px 0">
+                        <th class="th-01" style="width:200px;text-align:center">时间</th>
+                        <th class="th-02" style="width:485px;text-align:left">新词</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -89,6 +120,7 @@
                     </tbody>
                   </table>
                 </div>
+                <el-pagination style="margin:0 auto" v-if="neologism.timeType == 'month' ||neologism.timeType == 'part' " @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage5" :page-sizes="[5, 10, 20]" :page-size="5" layout="total, sizes, prev, pager, next, jumper" :total="count"></el-pagination>
               </el-dialog>
             </div>
           </li>
@@ -106,36 +138,22 @@
          <i class="el-dialog__close el-icon el-icon-close" style="position:absolute;right:30px;top:42%;cursor:pointer;font-size:16px" @click="centerDialogVisible3 = false"></i>
       </div>
       <div class="huaxiang" style="padding:10px 20px">
-        <div class="huaxiangitem" style="width:297px;height:300px">
+        <div class="huaxiangitem" style="width:297px;height:600px">
 
         </div>
-       <div class="huaxiangitem" style="width:297px;height:300px">
+       <div class="huaxiangitem" style="width:297px;height:600px">
 
         </div>
-        <div class="huaxiangitem" style="width:297px;height:300px">
+        <div class="huaxiangitem" style="width:297px;height:600px">
 
         </div>
-        <div class="huaxiangitem" style="width:297px;height:300px">
+        <div class="huaxiangitem" style="width:297px;height:600px">
 
         </div>
-        <div class="huaxiangitem" style="width:297px;height:300px">
+        <div class="huaxiangitem" style="width:297px;height:600px">
 
         </div>
-        <div class="huaxiangitem" style="width:297px;height:300px">
-
-        </div>
-        <div class="huaxiangitem" style="width:297px;height:300px">
-
-        </div>
-        <div class="huaxiangitem" style="width:297px;height:300px">
-
-        </div>
-        <div class="huaxiangitem" style="width:297px;height:300px">
-
-        </div>
-        <div class="huaxiangitem" style="width:297px;height:300px">
-
-        </div>
+        
 
       </div>
     </div>
@@ -175,6 +193,7 @@
         style="cursor:pointer"
       >{{item.title}}</div>
     </el-card>
+    <!-- 历史大数据分析 -->
     <div class="recommend">历史大数据分析</div>
     <el-card class="box-card">
       <div v-for="(item,index) in rankhistoryData" :key="index" class="kuai1">
@@ -202,7 +221,39 @@ require('echarts/lib/component/title')
 export default {
   data() {
     return {
-      frontuser:[{
+      // 时间选择器
+       pickerOptions: {
+          shortcuts: [{
+            text: '最近一周',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit('pick', [start, end]);
+            }
+          }, {
+            text: '最近一个月',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+              picker.$emit('pick', [start, end]);
+            }
+          }, {
+            text: '最近三个月',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+              picker.$emit('pick', [start, end]);
+            }
+          }]
+        },
+      value2:"",           //时间选择器的内容
+      currentPage5:0,      //当前第1页
+      size: 5,             //每页多少条数据
+      count: 0,            //总共多少条数据
+      frontuser:[{         //精准推荐的用户信息 
              userName:'小明',
              userId:"110000",
             },{
@@ -219,26 +270,21 @@ export default {
              userId:"330000",
             },
                ],
-      afteruser:[],
-      bingtu0:"",
-      bingtu1:"",
-      bingtu2:"",
-      bingtu3:"",
-      bingtu4:"",
-      bingtu5:"",
-      bingtu6:"",
-      bingtu7:"",
-      bingtu8:"",
-      bingtu9:"",
-      idurl:'http://192.168.100.41:8772/searchPage/recommendResult',
-      centerDialogVisible: false,
-      centerDialogVisible1: false,
-      centerDialogVisible2: false,
-      centerDialogVisible3:false,
-      textarea2:"",
-      timeurl: "http://192.168.100.41:8772/searchPage/newWord",
-      analyzeurl:"",
-      newdate: [
+      afteruser:[],        //精准推荐后端返回的数据
+      bingtu0:"",          //用户画像的饼图实例0  
+      bingtu1:"",          //用户画像的饼图实例1
+      bingtu2:"",          //用户画像的饼图实例2 
+      bingtu3:"",          //用户画像的饼图实例3 
+      bingtu4:"",          //用户画像的饼图实例4 
+      idurl:'http://192.168.100.41:8772/searchPage/recommendResult',  //精准推荐的后端接口
+      centerDialogVisible: false,     //提示框默认隐藏    
+      centerDialogVisible1: false,    //提示框默认隐藏 
+      centerDialogVisible2: false,    //提示框默认隐藏 
+      centerDialogVisible3:false,     //提示框默认隐藏 
+      textarea2:"",                   //智能分析输入框的内容
+      timeurl: "http://192.168.100.41:8772/searchPage/newWord",    //新词发现的后端接口
+      analyzeurl:"",                                               //智能分析的后端接口关键词
+      newdate: [           //新词发现数据
         {
           time: "本日",
           timeType: "day"
@@ -250,12 +296,14 @@ export default {
         {
           time: "本月",
           timeType: "month"
-        }
+        },
+        {
+          time:"自定义时间段",
+          timeType:"part"
+        } 
       ],
-      neologism: {
-        data: []
-      },
-      rankrealData: [
+      neologism: [],      //新词发现后端返回的数据 
+      rankrealData: [     //实时大数据分析数据
         {
           title: "区域热点分析",
           con_title: "ipRank"
@@ -273,7 +321,7 @@ export default {
           con_title: "contentRank"
         }
       ],
-      rankhistoryData: [
+      rankhistoryData: [  //历史大数据分析数据
         {
           name: "日热点分析",
           data: [
@@ -350,7 +398,7 @@ export default {
           ]
         }
       ],
-      analyze: [
+      analyze: [       //智能分析数据
         {
           realname: "分词抽取",
           sendname: "segmentation"
@@ -367,10 +415,14 @@ export default {
           realname: "实体抽取",
           sendname: "entity"
         },
+        {
+          realname:"智能翻译",
+          sendname:"machineTranslation"
+        }
       ],
-      analyzeData_realname:"",
-      analyzeData_sendname:"",
-      realAnalyzeData:[]
+      analyzeData_realname:"",     //绑定选项卡与提示框的realname
+      analyzeData_sendname:"",     //绑定选项卡与提示框的sendname
+      realAnalyzeData:[]           //智能分析返回的数据
     };
   },
   created(){
@@ -401,13 +453,81 @@ export default {
           });
       this.$ajax.post(this.idurl, data5).then(res => {
             this.afteruser.push(res.data)
-             console.log(this.afteruser)
+            //  console.log(this.afteruser)
           }).catch(res => {
             console.log(res);
           });
     },
   methods: {
-    submitrank(event) {
+    getzdyword(){      //自定义时间段新词搜索
+
+      let data = {
+        userName: "小明",
+        userID: 110000,
+        timeName: 'time',
+        timeType:'part',
+        startTime:this.value2[0],
+        endTime:this.value2[1], 
+        limit:'5',
+        offset:'0',
+      }
+
+      this.$ajax.post(this.timeurl, data).then(res => {
+            this.neologism = res.data
+            this.count = res.data.count
+            //  console.log(this.neologism)
+          }).catch(res => {
+            console.log(res);
+          });
+    },
+
+     handleSizeChange(val) {    //改变每页显示多少条
+
+       let data = {
+        userName: "小明",
+        userID: 110000,
+        timeName: 'time',
+        timeType:this.neologism.timeType,
+        startTime:this.value2[0],
+        endTime:this.value2[1],
+        limit:val,
+        offset:0
+      }
+
+      this.size = val;
+      
+      this.$ajax.post(this.timeurl, data).then(res => {
+            this.neologism = res.data
+            this.count = res.data.count
+            //  console.log(this.neologism)
+          }).catch(res => {
+            console.log(res);
+          });
+      },
+
+      handleCurrentChange(val) {   //改变当前多少页
+
+        let data = {
+        userName: "小明",
+        userID: 110000,
+        timeName: 'time',
+        timeType:this.neologism.timeType,
+        startTime:this.value2[0],
+        endTime:this.value2[1],
+        limit:this.size,
+        offset:(val-1)*this.size,
+      }
+
+      this.$ajax.post(this.timeurl, data).then(res => {
+            this.neologism = res.data
+            this.count = res.data.count
+            // console.log(this.neologism)
+          }).catch(res => {
+            console.log(res);
+          });
+    },
+
+    submitrank(event) {      //将实时大数据分析的点击元素的信息传给ranklist
       let target = event.target || window.event.srcElement;
       let routeUrl1 = this.$router.resolve({
         path: "/list/ranklist",
@@ -418,7 +538,8 @@ export default {
       });
       window.open(routeUrl1.href, "_blank");
     },
-    submitrank1(event) {
+
+    submitrank1(event) {     //将历史大数据分析的点击元素的信息传给ranklist
       let target = event.target || window.event.srcElement;
       let routeUrl2 = this.$router.resolve({
         path: "/list/ranklist",
@@ -429,7 +550,9 @@ export default {
       });
       window.open(routeUrl2.href, "_blank");
     },
-    gettimedate(event) {
+
+    gettimedate(event) {     //获取新词发现具体时间具体数据
+      this.neologism = [];
       let target = event.currentTarget;
       let timeType = target.getAttribute("data-id");
       let time = target.getAttribute("id");
@@ -437,19 +560,28 @@ export default {
         userName: "小明",
         userID: 110000,
         timeName: time,
-        timeType: timeType
+        timeType: timeType,
+        startTime:1,
+        endTime:1,
+        offset:0,
+        limit:5
       };
+      
       this.$ajax
         .post(this.timeurl, data1)
         .then(res => {
           this.neologism = res.data;
-          console.log(this.neologism)
+          this.count = res.data.count
+          // console.log(this.neologism)
         })
         .catch(res => {
           console.log(res);
         });
+      
+      
     },
-    analyze1(event) {
+
+    analyze1(event) {     //传递智能分析选项卡与提示框的关系(清空输入框内容)
       this.textarea2 = ""
       this.realAnalyzeData=[]
       let target = event.currentTarget;
@@ -457,7 +589,8 @@ export default {
       this.analyzeData_sendname = target.getAttribute("id");
       // console.log(this.analyzeData_sendname)
     },
-    realAnalyze(){
+
+    realAnalyze(){       //获取智能分析数据
       let data1 = {text:this.textarea2}
       this.analyzeurl = ""
       // console.log(this.analyzeData_sendname)
@@ -467,8 +600,10 @@ export default {
         this.analyzeurl = "keyWord"
       }else if(this.analyzeData_sendname == "keySentence"){
         this.analyzeurl = "keySentence"
-      }else{
+      }else if(this.analyzeData_sendname == "entity"){
         this.analyzeurl = "entity"
+      }else{
+        this.analyzeurl = "machineTranslation"
       }
       // console.log(this.analyzeurl)
       this.$ajax
@@ -481,7 +616,8 @@ export default {
           console.log(res);
         });
     },
-    topre_rec(event) {
+
+    topre_rec(event) {    //将精准推荐信息参数传递到precise_recommend页
       let target = event.target || window.event.srcElement;
       let abstracthref= this.$router.resolve({
         path: "/list/precise_recommend",
@@ -489,10 +625,9 @@ export default {
       });
       window.open(abstracthref.href,'_blank')
     },
-    // 画饼图
-    getbingtu(){
+    
+    getbingtu(){    // 画饼图
       // 基于准备好的dom，初始化echarts实例
-      
       this.bingtu0 = echarts.init(document.getElementsByClassName('huaxiangitem')[0]);
       this.bingtu1 = echarts.init(document.getElementsByClassName('huaxiangitem')[1]);
       this.bingtu2 = echarts.init(document.getElementsByClassName('huaxiangitem')[2]);
@@ -506,7 +641,7 @@ export default {
               subtext: '',//副标题
               x:'center',//x轴方向对齐方式
               left:0,
-              top:0
+              top:75
           },
           tooltip : {
               trigger: 'item',
@@ -536,7 +671,7 @@ export default {
               orient: 'vertical',
               right: 'right',
               width:'200px',
-              top: '150px',
+              bottom: '50px',
               data:[],
               itemWidth: 24,   // 设置图例图形的宽
               formatter:  (name)=> {
@@ -548,8 +683,8 @@ export default {
               {
                   name: '',
                   type: 'pie',
-                  radius:['0%','50%'],
-                  center: ['30%', '40%'],
+                  radius:['0%','70%'],
+                  center: ['40%', '45%'],
                   data:[],
                   itemStyle: {
                       emphasis: {
@@ -589,7 +724,7 @@ export default {
               subtext: '',//副标题
               x:'center',//x轴方向对齐方式
               left:0,
-              top:0
+              top:75
           },
           tooltip : {
               trigger: 'item',
@@ -619,7 +754,7 @@ export default {
               orient: 'vertical',
               right: 'right',
               width:'200px',
-              top: '150px',
+              bottom: '50px',
               data:[],
               itemWidth: 24,   // 设置图例图形的宽
               formatter:  (name)=> {
@@ -631,8 +766,8 @@ export default {
               {
                   name: '',
                   type: 'pie',
-                  radius:['0%','50%'],
-                  center: ['30%', '40%'],
+                  radius:['0%','70%'],
+                  center: ['40%', '45%'],
                   data:[],
                   itemStyle: {
                       emphasis: {
@@ -673,7 +808,7 @@ export default {
               subtext: '',//副标题
               x:'center',//x轴方向对齐方式
               left:0,
-              top:0
+              top:75
           },
           tooltip : {
               trigger: 'item',
@@ -703,7 +838,7 @@ export default {
               orient: 'vertical',
               right: 'right',
               width:'200px',
-              top: '150px',
+              bottom: '50px',
               data:[],
               itemWidth: 24,   // 设置图例图形的宽
               formatter:  (name)=> {
@@ -715,8 +850,8 @@ export default {
               {
                   name: '',
                   type: 'pie',
-                  radius:['0%','50%'],
-                  center: ['30%', '40%'],
+                  radius:['0%','70%'],
+                  center: ['40%', '45%'],
                   data:[],
                   itemStyle: {
                       emphasis: {
@@ -757,7 +892,7 @@ export default {
               subtext: '',//副标题
               x:'center',//x轴方向对齐方式
               left:0,
-              top:0
+              top:75
           },
           tooltip : {
               trigger: 'item',
@@ -787,7 +922,7 @@ export default {
               orient: 'vertical',
               right: 'right',
               width:'200px',
-              top: '150px',
+              bottom: '50px',
               data:[],
               itemWidth: 24,   // 设置图例图形的宽
               formatter:  (name)=> {
@@ -799,8 +934,8 @@ export default {
               {
                   name: '',
                   type: 'pie',
-                  radius:['0%','50%'],
-                  center: ['30%', '40%'],
+                  radius:['0%','70%'],
+                  center: ['40%', '45%'],
                   data:[],
                   itemStyle: {
                       emphasis: {
@@ -841,7 +976,7 @@ export default {
               subtext: '',//副标题
               x:'center',//x轴方向对齐方式
               left:0,
-              top:0
+              top:75
           },
           tooltip : {
               trigger: 'item',
@@ -871,7 +1006,7 @@ export default {
               orient: 'vertical',
               right: 'right',
               width:'200px',
-              top: '150px',
+              bottom: '50px',
               data:[],
               itemWidth: 24,   // 设置图例图形的宽
               formatter:  (name)=> {
@@ -883,8 +1018,8 @@ export default {
               {
                   name: '',
                   type: 'pie',
-                  radius:['0%','50%'],
-                  center: ['30%', '40%'],
+                  radius:['0%','70%'],
+                  center: ['40%', '45%'],
                   data:[],
                   itemStyle: {
                       emphasis: {
@@ -929,6 +1064,7 @@ export default {
     }
   }
 };
+
 </script>
 <style>
 .box-card {

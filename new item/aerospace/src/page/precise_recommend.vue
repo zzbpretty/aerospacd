@@ -1,4 +1,5 @@
 <template>
+<!-- 精准推荐详情页 -->
     <div style="background:#f7f7f7">
         <Header></Header>
         <div class="pre_rec-container">
@@ -22,8 +23,7 @@
                         <td class="td-06" v-if="index > 4 && index <= 14"><i class="icon-txt icon-txt-jian">荐</i></td>
                         <td class="td-06" v-if="index > 14 && index <= 20"><i class="icon-txt icon-txt-new">新</i></td>
                     </tr>
-                </tbody>
-            
+                </tbody> 
             </table>
         </div>
         <Footer></Footer>
@@ -39,28 +39,26 @@ export default {
   },
   data(){
       return{
-          pre_recData:[]
+          pre_recData:[]    //精准推荐数据
       }
   },
   created(){
       let data1 = {
-        type: this.$route.query.value,
-        keyword: this.$route.query.keyword,
-        size: 20,
-        start: 0
+        type: this.$route.query.value,        //搜索类型
+        keyword: this.$route.query.keyword,   //搜索关键词
+        size: 20,                             //每页显示多少条
+        start: 0                              //从哪页开始
       };
-      this.$ajax
-        .post("http://192.168.100.44:8070/search/match", data1)
-        .then(res => {
+
+      this.$ajax.post("http://192.168.100.44:8070/search/match", data1).then(res => {
           this.pre_recData = res.data.data;
-          console.log(this.pre_recData)
         })
         .catch(res => {
           console.log(res);
         });
   },
   methods:{
-      toabstract(event) {
+      toabstract(event) {        //跳转详情页
       let target = event.target || window.event.srcElement;
       let abstracthref= this.$router.resolve({
         path: "/list/abstract",

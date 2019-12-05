@@ -142,11 +142,11 @@
 <script>
 import Header from "../components/header";
 import Footer from "../components/footer";
-import echarts from 'echarts'
-require('echarts/map/js/china')
-require('echarts/lib/chart/pie')
-require('echarts/lib/component/tooltip')
-require('echarts/lib/component/title')
+import echarts from 'echarts'              //引入echarts
+require('echarts/map/js/china')            //引入地图组件 
+require('echarts/lib/chart/pie')           //引入饼图组件
+require('echarts/lib/component/tooltip')   //引入提示组件
+require('echarts/lib/component/title')     //引入标题组件
 
 
 export default {
@@ -156,46 +156,42 @@ export default {
     },
   data() {
     return {
-      rankData: [],
-      tabPosition: "left",
-      activeTab:"",
-      activeTuTab:"bingtu",
-      content:"",
-      ranktitle:"",
-      rankurl:"http://192.168.100.41:8772/searchPage/bigDataExhibition",
-      con_title:"",
-      classname:"",
-      chinachart0:"",
-      chinachart1:"",
-      chinachart2:"",
-      chinachart3:"",
-      bingtu0:"",
-      bingtu1:"",
-      bingtu2:"",
-      bingtu3:""
+      rankData: [],                    //大数据分析具体数据
+      tabPosition: "left",             //左侧选项卡
+      activeTab:"",                    //当前选中左侧选项卡
+      activeTuTab:"bingtu",            //当前选中上侧选项卡
+      content:"",                      //改变数据内容列标题名
+      ranktitle:"",                    //改变标题
+      rankurl:"http://192.168.100.41:8772/searchPage/bigDataExhibition",   //大数据分析接口
+      con_title:"",                    //保存不同类型url里的con_title
+      classname:"",                    //修改不同con_title数据的数据内容列的样式
+      chinachart0:"",                  //中国地图实例0 
+      chinachart1:"",                  //中国地图实例1 
+      chinachart2:"",                  //中国地图实例2 
+      chinachart3:"",                  //中国地图实例3 
+      bingtu0:"",                      //饼图实例0 
+      bingtu1:"",                      //饼图实例1 
+      bingtu2:"",                      //饼图实例2 
+      bingtu3:""                       //饼图实例3 
     };
   },
    methods:{
       setCurrent(row) {
         this.$refs.singleTable.setCurrentRow(row);
-        
       },
+
       handleCurrentChange(val) {
         this.currentRow = val;
         console.log(val)
-
       },
 
       // 切换实时排序
       async changeReal(){
       let data1 = { exhibitionType: "realTime" };
-      await this.$ajax
-      .post(this.rankurl, data1)
-      .then(res => {
+      await this.$ajax.post(this.rankurl, data1).then(res => {
         this.rankData = res.data.exhibitionResult[this.$route.query.con_title];
-        console.log(res.data.exhibitionResult)
-      })
-      .catch(res => {
+        // console.log(res.data.exhibitionResult)
+      }).catch(res => {
         console.log(res);
       });
 
@@ -268,7 +264,9 @@ export default {
           this.rankData[i].value= "新疆"
         }
       }
+      
       this.getrealchart();
+
       }else if(this.$route.query.con_title == "stateRank"){
         for(let i = 0;i<this.rankData.length;i++){
         if(this.rankData[i].value<=200){
@@ -325,15 +323,11 @@ export default {
 
       //切换按日排序
      async changeDay(){
-        let data2 = { exhibitionType: "day" };
-      await  this.$ajax
-      .post(this.rankurl, data2)
-      .then(res => {
-        // console.log(res)
+        let data2 = { exhibitionType: "day" }
+
+      await  this.$ajax.post(this.rankurl, data2).then(res => {
         this.rankData = res.data.exhibitionResult[this.$route.query.con_title];
-        
-      })
-      .catch(res => {
+      }).catch(res => {
         console.log(res);
       });
 
@@ -406,7 +400,9 @@ export default {
           this.rankData[i].value= "新疆"
         }
       }
+
       this.getrealchart();
+
       }else if(this.$route.query.con_title == "stateRank"){
         for(let i = 0;i<this.rankData.length;i++){
         if(this.rankData[i].value<=200){
@@ -462,17 +458,14 @@ export default {
 
       // 切换按周排序
      async changeWeek(){
-        let data3 = { exhibitionType: "week" };
-     await   this.$ajax
-      .post(this.rankurl, data3)
-      .then(res => {
+     let data3 = { exhibitionType: "week" };
+
+     await this.$ajax.post(this.rankurl, data3).then(res => {
         this.rankData = res.data.exhibitionResult[this.$route.query.con_title];
         for(let i =0;i<this.rankData.length;i++){
-     this.chartOption.series[0].data.push({name:this.rankData[i].value,value:this.rankData[i].rank})
-  }
-        
-      })
-      .catch(res => {
+        this.chartOption.series[0].data.push({name:this.rankData[i].value,value:this.rankData[i].rank})
+        }
+      }).catch(res => {
         console.log(res);
       });
       
@@ -545,7 +538,9 @@ export default {
           this.rankData[i].value= "新疆"
         }
       }
+
       this.getrealchart();
+
       }else if(this.$route.query.con_title == "stateRank"){
         for(let i = 0;i<this.rankData.length;i++){
         if(this.rankData[i].value<=200){
@@ -593,23 +588,18 @@ export default {
           }
       }
       this.getbingtu();
-       
       // console.log(this.rankWeekdata)
-      
       },
       //切换按月排序
       async changeMonth(){
-        let data4 = { exhibitionType: "month" };
-      await this.$ajax
-      .post(this.rankurl, data4)
-      .then(res => {
+      let data4 = { exhibitionType: "month" };
+      await this.$ajax.post(this.rankurl, data4).then(res => {
         this.rankData = res.data.exhibitionResult[this.$route.query.con_title];
         for(let i =0;i<this.rankData.length;i++){
-     this.chartOption.series[0].data.push({name:this.rankData[i].value,value:this.rankData[i].rank})
-      }
+         this.chartOption.series[0].data.push({name:this.rankData[i].value,value:this.rankData[i].rank})
+        }
         // console.log(res.data)
-      })
-      .catch(res => {
+      }).catch(res => {
         console.log(res);
       });
 
@@ -682,7 +672,9 @@ export default {
           this.rankData[i].value= "新疆"
         }
       }
+
        this.getrealchart();
+
        }else if(this.$route.query.con_title == "stateRank"){
         for(let i = 0;i<this.rankData.length;i++){
         if(this.rankData[i].value<=200){
@@ -754,8 +746,6 @@ export default {
 
       // 画中国地图
       getrealchart(){
-        // console.log(this.rankData+2)
-
         if(this.$route.query.con_title == 'ipRank'){
         // 初始化echarts实例
          this.chinachart0 = echarts.init(document.getElementsByClassName('realmap')[0])
@@ -764,14 +754,14 @@ export default {
          this.chinachart3 = echarts.init(document.getElementsByClassName('realmap')[3])
          // 进行相关配置
          
-         this.chartOption = {
-       title : {
+      this.chartOption = {
+           title : {
               text: this.content,//主标题
               subtext: '',//副标题
               x:'center',//x轴方向对齐方式
               left: 'center',
               top:20
-          },
+           },
        tooltip: { // 鼠标移到图里面的浮动提示框
        // formatter详细配置： https://echarts.baidu.com/option.html#tooltip.formatter
        formatter (params, ticket, callback) { 
@@ -800,7 +790,7 @@ export default {
         },
          
       // visualMap的详细配置解析：https://echarts.baidu.com/option.html#visualMap
-       visualMap: { // 左下角的颜色区域
+      visualMap: { // 左下角的颜色区域
       type: 'piecewise', // 定义为分段型 visualMap
       min: 1,
       max: 20,
@@ -976,6 +966,7 @@ export default {
       this.ranktitle = "内容热点分析"
       this.activeTuTab = "shuju"
       }
+    
     //修改不同标题样式
     this.activeTab=this.$route.query.con_method
     this.con_title = this.$route.query.con_title 
@@ -991,17 +982,14 @@ export default {
     
     //初始化数据，地图
     let data0 = { exhibitionType: this.$route.query.con_method };
-    await this.$ajax
-      .post(this.rankurl, data0)
-      .then(res => {
+
+    await this.$ajax.post(this.rankurl, data0).then(res => {
            this.rankData = res.data.exhibitionResult[this.$route.query.con_title];
-        
-          // console.log(this.rankData)  
-      })
-      .catch(res => {
+      }).catch(res => {
         console.log(res);
       })
-      // 初始化数据
+    
+    // 初始化数据
       if(this.$route.query.con_title == 'ipRank'){
          for(let i=0;i<this.rankData.length;i++){    
           if(this.rankData[i].value == 10000){
@@ -1110,31 +1098,26 @@ export default {
         this.rankData[i].value="无响应"
       }
         }
-         
+
       }else if(this.$route.query.con_title=="contentRank"){
           for(let i = 0;i<this.rankData.length;i++){
             this.rankData[i].value = this.rankData[i].value
           }
       }
-     
-
-      
 
   },
 
   mounted(){
-    
-    // 画地图
+  // 画地图(延时加载,等数据请求完毕)
    var yanshi = setTimeout(() => {
      this.getrealchart()
      this.getbingtu()
    }, 1500); 
   },
+
   destroyed(){
     clearTimeout(yanshi)
   }
-  
-
 }
 </script>
 <style >

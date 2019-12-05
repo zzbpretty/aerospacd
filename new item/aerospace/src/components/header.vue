@@ -4,7 +4,7 @@
             <div class="head-main">
                 <router-link to="/" class="link-home">
                     <div style="height:71px;float:left;position:absolute;top:-1px">
-                        <div style="height:45px;line-height:45px;font-size:18px;font-weight:900;color:white">中国航天系统科学与工程研究院四所</div>
+                        <div style="height:45px;line-height:45px;font-size:18px;font-weight:900;color:white">中国航天系统科学与工程研究院第707所</div>
                         <div style="color:white">China Aerospace Academy of Systems Science and Engineering</div>
                     </div>
                 </router-link>

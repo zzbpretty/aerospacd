@@ -1,4 +1,5 @@
 <template>
+<!-- 支付页 -->
   <div>
     <Header></Header>
     <Search></Search>
@@ -50,15 +51,10 @@ export default {
   },
   mounted() {
     let data1 = { data_id: this.$route.query.con_title };
-    this.$ajax
-      .get(this.payurl+ data1.data_id)
-      .then(res => {
+
+    this.$ajax.get(this.payurl+ data1.data_id).then(res => {
         this.abstractData = res.data;
-        this.abstractData.con_time = this.abstractData.con_time.substr(
-          0,
-          this.abstractData.con_time.indexOf("T")
-        );
-        console.log(this.abstractData);
+        this.abstractData.con_time = this.abstractData.con_time.substr(0,this.abstractData.con_time.indexOf("T"));
       })
       .catch(res => {
         console.log(res);

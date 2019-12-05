@@ -39,7 +39,7 @@
     </div>
     <Header></Header>
     <Search></Search>
-    <!-- 内容 -->
+    <!-- 摘要内容 -->
     <div class="c-content">
       <div class="c-title">
         <h1>{{abstractData.con_title}}</h1>
@@ -80,9 +80,9 @@ export default {
   },
   data() {
     return {
-      abstractData: [],
-      datatype:"",
-      abstracturl:"http://192.168.100.44:8070/search/abstract/",
+      abstractData: [],    //摘要返回数据
+      datatype:"",         //数据类型(html/pdf) 
+      abstracturl:"http://192.168.100.44:8070/search/abstract/",  
       pdfurl:'http://192.168.100.44:8070/search/downloadFile/',
       // abstractContent:abstractData.con_title
     };
@@ -97,33 +97,35 @@ export default {
     }
   },
   mounted(){
-      this.datatype = this.$route.query.data_type
+     this.datatype = this.$route.query.data_type       //用变量dataType保存文件类型
      let data1 = { data_id: this.$route.query.con_title };
+
      this.$ajax
       .get(this.abstracturl+data1.data_id)
       .then(res => {
         this.abstractData = res.data;
-        this.abstractData.con_time = this.abstractData.con_time.substr(
-          0,
-          this.abstractData.con_time.indexOf("T")
-        );
-        
-        console.log(this.abstractData.keysentence)
+        this.abstractData.con_time = this.abstractData.con_time.substr(0,this.abstractData.con_time.indexOf("T"));
+        // console.log(this.abstractData.keysentence)
       })
       .catch(res => {
-        // console.log(res);
+        console.log(res);
       });
+
+      // 遮罩和下载弹窗内容
       $('.downloadshow').click(function(){
           $('.zhezhao').attr('style','display:block')
           $('.download_box').attr('style','display:block')
       })
+
+      // 关闭遮罩和下载弹窗内容
       $('.pop_close').click(function(){
           $('.zhezhao').attr('style','display:none')
           $('.download_box').attr('style','display:none') 
       })
-      // console.log(this.datatype)
-      var self = this;
-      $('.readstart').click(function(){
+      
+      var self = this;  //改变this指向
+
+      $('.readstart').click(function(){    //阅读判断是否是pdf类型，如果是则执行pdf.js
         if(self.datatype == "pdf" ){
            window.open('../../static/pdf.js-gh-pages/web/viewer.html?file='+ self.pdfurl +self.$route.query.con_title,'PDF','width:50%;height:50%;top:0;left:100;');
         }else{
@@ -131,12 +133,13 @@ export default {
            $('.alert-img').attr('style','display:block')
         }
       })
+
+      // 关闭遮罩和快照弹窗内容
       $('.pop_close1').click(function(){
           $('.zhezhao').attr('style','display:none')
           $('.alert-img').attr('style','display:none')
       })
   },
-  
 };
 
 

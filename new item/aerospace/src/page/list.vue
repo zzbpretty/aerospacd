@@ -1,4 +1,5 @@
 <template>
+<!-- 搜索结果页 -->
     <div>
     <Header></Header>
     <Search></Search>
@@ -20,20 +21,6 @@ export default {
     Footer,
     Fenye,
   },
-  data(){
-      return{
-        list:"",
-        type:"",
-        keyword:""
-      }
-  },
-
-    mounted() {
-      
-
-    },
-
-
 }
 
 </script>

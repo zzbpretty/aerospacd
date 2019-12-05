@@ -1,13 +1,15 @@
 <template>
   <div class="container">
+    <!-- 左侧推荐栏 -->
     <div class="container-left">
       <Recommend></Recommend>
     </div>
+    <!-- 搜索内容栏 -->
     <div class="container-content">
       <el-tabs type="border-card">
         <el-tab-pane label="列表">
           <el-table :data="tableData" style="width: 100%;text-align:center">
-            <!-- <el-table-column prop={{con_title}}     label="题名" width="300" style="text-align:center"></el-table-column> -->
+            <!-- 题名列 -->
             <el-table-column label="题名" width="300" style="text-align:left">
               <template slot-scope="scope">
                 <span
@@ -19,6 +21,7 @@
                 ></span>
               </template>
             </el-table-column>
+            <!-- 作者列 -->
             <el-table-column prop="con_author" label="作者" width="150" style="text-align:left">
               <template slot-scope="scope">
                 <span
@@ -27,12 +30,15 @@
                 ></span>
               </template>
             </el-table-column>
+            <!-- 来源列 -->
             <el-table-column prop="con_from" label="来源" width="120" style="text-align:center"></el-table-column>
+            <!-- 发表时间列 -->
             <el-table-column label="发表时间" width="120" style="text-align:center">
               <template slot-scope="scope">
                 <span>{{scope.row.con_time.substr(0,scope.row.con_time.indexOf('T'))}}</span>
               </template>
             </el-table-column>
+            <!-- 下载列 -->
             <el-table-column label="下载" width="100" style="text-align:center">
                 <template slot-scope="scope">
                 <i class="fa fa-arrow-circle-down" aria-hidden="true" style="color:#14a218;cursor:pointer"  
@@ -41,6 +47,7 @@
                   :id="scope.row.data_type"></i>
                   </template>
             </el-table-column>
+            <!-- 阅读列 -->
             <el-table-column label="阅读" width="100" style="text-align:center">
                <template slot-scope="scope">
                 <i class="datatype" style="color:#f60;cursor:pointer"  
@@ -87,8 +94,7 @@
                   </ul>
                </div>
           </div>
-
-            <!-- 分页 -->
+          <!-- 分页 -->
           <div class="block" style="width:100%;text-align:center">
             <el-pagination
               @size-change="handleSizeChange"
@@ -103,14 +109,14 @@
         </el-tab-pane>
       </el-tabs>
     </div>
-
+    <!-- 右侧功能栏 -->
     <div class="container-right">
       <Rank></Rank>
     </div>
   </div>
 </template>
 <script>
-import Bus from "../assets/Bus";
+import Bus from "../assets/Bus";     //引入公共js，兄弟传值
 import Recommend from "./recommend";
 import Rank from "./rank";
 export default {
@@ -120,24 +126,25 @@ export default {
   },
   data() {
     return {
-      www: "www.baidu.com",
-      tableData: [],
-      currentPage4: 1,
-      size: 20,
-      total: 0
+      tableData: [],    //搜索数据
+      currentPage4: 1,  //当前页
+      size: 20,         //每页多少条数据
+      total: 0         //总共多少条数据
     };
   },
 
   methods: {
-    handleSizeChange(val) {
+    handleSizeChange(val) {        //改变每页多少条数据
+
       let data1 = {
         type: this.$route.query.value,
         keyword: this.$route.query.keyword,
         size: val,
         start: 0
       };
-      console.log(data1);
+
       this.size = val;
+
       this.$ajax
         .post("http://192.168.100.44:8070/search/match", data1)
         .then(res => {
@@ -148,15 +155,15 @@ export default {
           console.log(res);
         });
     },
-    handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
+    handleCurrentChange(val) {    //改变当前第几页
+      
       let data1 = {
         type: this.$route.query.value,
         keyword: this.$route.query.keyword,
         size: this.size,
         start: (val - 1) * this.size
       };
-      console.log(data1);
+
       this.$ajax
         .post("http://192.168.100.44:8070/search/match", data1)
         .then(res => {
@@ -167,7 +174,8 @@ export default {
           console.log(res);
         });
     },
-    toabstract(event) {
+
+    toabstract(event) {        //跳转到详情页，并将数据信息绑定在url中
       let target = event.currentTarget ;
       let abstracthref= this.$router.resolve({
         path: "/list/abstract",
@@ -175,7 +183,8 @@ export default {
       });
       window.open(abstracthref.href,'_blank')
     },
-    topay(event){
+
+    topay(event){             //跳转到支付页，并将数据信息绑定在url中
       let target = event.currentTarget;
       let payhref= this.$router.resolve({
         path: "/list/pay",
@@ -186,7 +195,7 @@ export default {
   },
 
    created() {
-    var self = this;
+    var self = this;      //改变this指向
     Bus.$on("send", function(val) {
       self.tableData = val.data;
       self.total = val.total;
@@ -200,8 +209,8 @@ export default {
         size: 20,
         start: 0
       };
-      // console.log(data);
-      this.$ajax
+      
+    this.$ajax
         .post("http://192.168.100.44:8070/search/match", data)
         .then(res => {
           this.tableData = res.data.data;

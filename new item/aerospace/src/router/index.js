@@ -35,11 +35,6 @@ const router = new Router({
       component: ()=>import ('../page/register.vue')
     },
     {
-      path: '/list/detail',
-      name: 'Detail',
-      component: ()=>import ('../page/detail.vue')
-    },
-    {
       path: '/list/ranklist',
       name: 'Ranklist',
       component: ()=>import ('../page/ranklist.vue')

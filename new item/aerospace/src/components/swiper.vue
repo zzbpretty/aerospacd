@@ -1,4 +1,5 @@
 <template>
+<!-- 首页轮播图 -->
   <div class="swiper">
     <div class="swiper-box">
       <div class="content">
@@ -62,7 +63,7 @@
             </ol>
           </div>
          </div>
-          <!-- waiwen -->
+          <!-- 外文 -->
           <div class="world-cnki">
             <div class="subcaption">
               <i></i>
@@ -86,7 +87,7 @@
 export default {
   mounted() {
     let bool = true;
-
+    // 点击收缩显示功能
     $(".is-down").on("click", function() {
       if (bool) {
         $(".content")
@@ -107,7 +108,7 @@ export default {
       }
     });
 
-  // swiper
+  // swiper功能
 var index = 0;
 var timer;
 var otimer;

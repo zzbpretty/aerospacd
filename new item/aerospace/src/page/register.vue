@@ -157,9 +157,7 @@
         
       </div>
    
-
-
-      <!-- 底部动画 -->
+      <!-- 底层背景动画 -->
       <div class="circle-box">
 		<div class="circle-1"></div>
 		<div class="circle-2"></div>
@@ -167,12 +165,13 @@
 		<div class="element-1"></div>
 		<div class="element-2"></div>
 	  </div>
+
     </div>
 </template>
 <script>
 export default {
   data() {
-      var checkTel = (rule, value, callback) => {
+      var checkTel = (rule, value, callback) => {     //手机号正则验证
         if (!value) {
           return callback(new Error('手机号不能为空'));
         }
@@ -184,8 +183,8 @@ export default {
         }
         }, 1000);
       };
-      var validatePass = (rule, value, callback) => {
 
+      var validatePass = (rule, value, callback) => {  //密码正则验证
       //是否包含数字
       var ptr_digit = /^.*[0-9]+.*$/;
       //是否包含小写字母
@@ -212,7 +211,8 @@ export default {
          callback(new Error("至少包含大写字母、小写字母、数字、特殊字符中的三类字符"))
         }
       };
-      var validatePass2 = (rule, value, callback) => {
+
+      var validatePass2 = (rule, value, callback) => {    //再次输入密码逻辑
         if (value === '') {
           callback(new Error('请再次输入密码'));
         } else if (value !== this.ruleForm.pass) {
@@ -221,7 +221,8 @@ export default {
           callback();
         }
       };
-      var checkCode = (rule, value, callback) => {
+
+      var checkCode = (rule, value, callback) => {        //手机注册验证码输入逻辑
           if(value === ''){
               callback(new Error('请输入验证码'))
           }else if(value == this.allstr){
@@ -231,7 +232,7 @@ export default {
           }
       };
 
-       var checkCode1 = (rule, value, callback) => {
+       var checkCode1 = (rule, value, callback) => {     //邮箱注册验证码输入逻辑
           if(value === ''){
               callback(new Error('请输入验证码'))
           }else if(value == this.allstr1){
@@ -241,7 +242,7 @@ export default {
           }
       };
 
-      var checkMailbox = (rule, value, callback) => {
+      var checkMailbox = (rule, value, callback) => {    //邮箱验证逻辑
           if(value === ''){
               callback(new Error('请输入邮箱号码'))
           }else if(!/^[A-Za-z\d]+[A-Za-z\d\-_\.]*@([A-Za-z\d]+[A-Za-z\d\-]*\.)+[A-Za-z]{2,4}$/.test(value) ){
@@ -250,6 +251,7 @@ export default {
               callback()
           }
       };
+      
       return {
         allstr:"",
         allstr1:"",

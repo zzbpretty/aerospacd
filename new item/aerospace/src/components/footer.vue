@@ -58,7 +58,7 @@
                             <a target="_blank" href="javascript:void(0)">航天招聘</a>
                             <a target="_blank" href="javascript:void(0)">航天推广</a>
                         </span>
-                        <span id="copyright">© 2016-2019 中国航天系统科学与工程研究院四所</span>
+                        <span id="copyright">© 2016-2019 中国航天系统科学与工程研究院第707所</span>
                     </p>
                     <p class="right">
                         <a id="___szfw_logo___" href="javascript:void(0)" target="_blank">

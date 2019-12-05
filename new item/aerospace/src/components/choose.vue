@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- 首页下方推荐 -->
     <p class="result-tip">
       <router-link to="/cdetail">推荐新闻</router-link>
     </p>

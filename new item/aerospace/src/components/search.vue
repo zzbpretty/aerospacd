@@ -68,12 +68,10 @@ export default {
     };
   },
   methods: {
-    showMessage(e) {
+    showMessage(e) {  //当选项框改变时,用变量记录改变值
       this.label = e;
-      // this.type=e.value
     },
-    submit() {
-      console.log();
+    submit() {        //搜索跳转
       if ($("#keyword").val() == "") {
         $(".alert")
           .stop()
