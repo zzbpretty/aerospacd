@@ -1,28 +1,10 @@
 <template>
   <div>
     <!-- 智能分析 -->
-    <div class="recommend">智能分析</div>
-    <el-card class="box-card">
-      <div class="text item" style="padding-top:0px">
-        <ul class="jingzhun" style="margin-top:10px">
-          <li
-            v-for="(item,index) in analyze"
-            :key="index"
-            style="width:180px;height:30px;font-size:16px"
-          >
-            <div style>
-              <el-button
-                type="text"
-                @click="analyze1($event);centerDialogVisible2 = true"
-                style="font-size:14px"
-                :data-id="item.realname"
-                :id="item.sendname"
-              >{{item.realname}}</el-button>
-              <el-dialog title="智能分析" :visible.sync="centerDialogVisible2" width="40%" center>
-                <div style="text-align:center">
-                  <h2 style="font-family:'PingFang SC';font-size:20px">{{analyzeData_realname}}</h2>
-                </div>
-                <div style="width:88%;margin:0 auto;margin-top:30px;margin-bottom:25px;text-align:right">
+    <div class="recommend"><el-button type="text" @click="analyze1;centerDialogVisible2 = true">智能分析</el-button></div>
+    <el-dialog title="智能分析" :visible.sync="centerDialogVisible2" width="40%" center>
+
+                <div style="width:92%;margin:0 auto;margin-top:30px;margin-bottom:25px;text-align:right">
                   <el-input
                     type="textarea"
                     :autosize="{ minRows: 4, maxRows: 8}"
@@ -31,12 +13,16 @@
                     style="border:none !important"
                   >
                   </el-input>
-                  <el-button type="primary" style="margin-top:10px;" @click="realAnalyze">分析</el-button>
+
+                  <ul v-for="(item,index) in analyze" :key="index" style="float:left;margin:5px auto 20px">
+                    <li  style="float: left;margin-left:26px"> <el-button type="primary" style="margin-top:10px;" :data-id="item.sendname" @click="realAnalyze($event)">{{item.realname}}</el-button></li>
+                  </ul>
+                 
                 </div>
                 <div class="analyzeData" style="width:90%;margin:0 auto;min-height:120px;max-height:300px;overflow-y:scroll;box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);">
-                   <span  v-for="(item,index) in realAnalyzeData.segmentation" v-html="item" :key="index" v-if="(analyzeData_sendname == 'segmentation')">{{item}}</span>
-                    <span  v-for="(item,index) in realAnalyzeData.keyWord" v-html="item" :key="index" v-if="(analyzeData_sendname == 'keyWord')">{{item}}</span>
-                     <span  v-for="(item,index) in realAnalyzeData.entity" v-html="item" :key="index" v-if="(analyzeData_sendname == 'entity')">{{item}}</span>
+                   <span  v-for="(item,index) in realAnalyzeData.segmentation" v-html="item" :key="index" v-show="(analyzeData_sendname == 'segmentation')">{{item}}</span>
+                    <span  v-for="(item,index) in realAnalyzeData.keyWord" v-html="item" :key="index" v-show="(analyzeData_sendname == 'keyWord')">{{item}}</span>
+                     <span  v-for="(item,index) in realAnalyzeData.entity" v-html="item" :key="index" v-show="(analyzeData_sendname == 'entity')">{{item}}</span>
                   <ul class="keysentence" v-if="analyzeData_sendname == 'keySentence'">
                        <li v-for="(item,index) in realAnalyzeData.keySentence" v-html="item" :key="index" >{{item}}</li>
                    </ul>
@@ -45,12 +31,62 @@
                    </ul>
                 </div>
               </el-dialog>
-            </div>
-          </li>
-        </ul>
+   
+    <!-- 知识图谱 -->
+    <div class="recommend"><span>知识图谱</span></div>
+    <!-- 用户画像 -->
+    <div class="recommend"><el-button type="text" @click="centerDialogVisible3 = true;getbingtu()">用户画像</el-button></div>
+    <div v-show="centerDialogVisible3" @click="centerDialogVisible3 = false" style="position:fixed;width:100%;height:100%;background:#000;left:0;top:0;z-index:2000;opacity:0.5"></div>
+    <div v-show="centerDialogVisible3" style="position:fixed;width:90%;min-height:65%;background:#fff;left:50%;top:15%;margin-left:-45%;z-index:2001;border-radius:10px">
+      <div class="hauxiang-head" style="position:relative;padding: 20px 20px 10px;text-align: center;padding-bottom: 15px;background: #4286ec;width:100%;height:60px;box-sizing:border-box;border-top-left-radius: 10px;border-top-right-radius: 10px;">
+         <span style="font-family:'Microsoft YaHei','\5FAE\8F6F\96C5\9ED1';color: #ffffff;font-weight: 800;font-size: 20px;">用户画像</span>
+         <i class="el-dialog__close el-icon el-icon-close" style="position:absolute;right:30px;top:42%;cursor:pointer;font-size:16px" @click="centerDialogVisible3 = false"></i>
       </div>
-    </el-card>
-    <!-- 新词发现 -->
+      <div class="huaxiang" style="padding:10px 20px">
+        <div class="huaxiangitem" style="width:297px;height:600px">
+
+        </div>
+       <div class="huaxiangitem" style="width:297px;height:600px">
+
+        </div>
+        <div class="huaxiangitem" style="width:297px;height:600px">
+
+        </div>
+        <div class="huaxiangitem" style="width:297px;height:600px">
+
+        </div>
+        <div class="huaxiangitem" style="width:297px;height:600px">
+
+        </div>
+        
+
+      </div>
+    </div>
+    <!-- 精准推荐 -->
+    <div class="recommend"><el-button type="text" @click="centerDialogVisible = true">精准推荐</el-button></div>
+    <el-dialog title="精准推荐"  :visible.sync="centerDialogVisible" width="45%" center>
+                 <div class="data" style="padding:20px">
+                 <table style="table-layout: fixed;border-collapse: collapse;border-spacing: 0;">
+                   <thead>
+                      <tr class="thead_tr">
+                         <th class="th-01" style="width:50px;text-align:center">序号</th>
+                         <th class="th-02" style="width:100px;text-align:center">姓名</th>
+                         <th class="th-03" style="width:400px;text-align:center">常搜关键词</th>
+                      </tr>
+                   </thead>
+                  <tbody>
+                    <tr class="tbody_tr" v-for="(item,index) in afteruser" :key="index">
+                      <td style="width:100px;text-align:center;color: #f26d5f;font-size:16px">{{index+1}}</td>
+                      <td style="width:120px;text-align:center;color:#0078b6;font-size:16px"   >{{item.userName}}</td>
+                      <td style="width:520px;text-align:left;color:#0078b6;font-size:16px" >
+                        <span v-for="(item1,index) in item.recommendResult" :key="index" :data-id='item1.value' @click="topre_rec($event)" style="cursor:pointer">{{item1.value}}&ensp;</span>
+                      </td>
+                    </tr>
+                  </tbody>
+                 </table>
+                 </div>
+      </el-dialog>
+     <!-- 新词发现 -->
     <div class="recommend">新词发现</div>
     <el-card class="box-card">
       <div class="text item" style="padding-top:0px">
@@ -127,60 +163,6 @@
         </ul>
       </div>
     </el-card>
-    <!-- 知识图谱 -->
-    <div class="recommend"><span>知识图谱</span></div>
-    <!-- 用户画像 -->
-    <div class="recommend"><el-button type="text" @click="centerDialogVisible3 = true;getbingtu()">用户画像</el-button></div>
-    <div v-show="centerDialogVisible3" @click="centerDialogVisible3 = false" style="position:fixed;width:100%;height:100%;background:#000;left:0;top:0;z-index:2000;opacity:0.5"></div>
-    <div v-show="centerDialogVisible3" style="position:fixed;width:90%;min-height:65%;background:#fff;left:50%;top:15%;margin-left:-45%;z-index:2001;border-radius:10px">
-      <div class="hauxiang-head" style="position:relative;padding: 20px 20px 10px;text-align: center;padding-bottom: 15px;background: #4286ec;width:100%;height:60px;box-sizing:border-box;border-top-left-radius: 10px;border-top-right-radius: 10px;">
-         <span style="font-family:'Microsoft YaHei','\5FAE\8F6F\96C5\9ED1';color: #ffffff;font-weight: 800;font-size: 20px;">用户画像</span>
-         <i class="el-dialog__close el-icon el-icon-close" style="position:absolute;right:30px;top:42%;cursor:pointer;font-size:16px" @click="centerDialogVisible3 = false"></i>
-      </div>
-      <div class="huaxiang" style="padding:10px 20px">
-        <div class="huaxiangitem" style="width:297px;height:600px">
-
-        </div>
-       <div class="huaxiangitem" style="width:297px;height:600px">
-
-        </div>
-        <div class="huaxiangitem" style="width:297px;height:600px">
-
-        </div>
-        <div class="huaxiangitem" style="width:297px;height:600px">
-
-        </div>
-        <div class="huaxiangitem" style="width:297px;height:600px">
-
-        </div>
-        
-
-      </div>
-    </div>
-    <!-- 精准推荐 -->
-    <div class="recommend"><el-button type="text" @click="centerDialogVisible = true">精准推荐</el-button></div>
-    <el-dialog title="精准推荐"  :visible.sync="centerDialogVisible" width="45%" center>
-                 <div class="data" style="padding:20px">
-                 <table style="table-layout: fixed;border-collapse: collapse;border-spacing: 0;">
-                   <thead>
-                      <tr class="thead_tr">
-                         <th class="th-01" style="width:50px;text-align:center">序号</th>
-                         <th class="th-02" style="width:100px;text-align:center">姓名</th>
-                         <th class="th-03" style="width:400px;text-align:center">常搜关键词</th>
-                      </tr>
-                   </thead>
-                  <tbody>
-                    <tr class="tbody_tr" v-for="(item,index) in afteruser" :key="index">
-                      <td style="width:100px;text-align:center;color: #f26d5f;font-size:16px">{{index+1}}</td>
-                      <td style="width:120px;text-align:center;color:#0078b6;font-size:16px"   >{{item.userName}}</td>
-                      <td style="width:520px;text-align:left;color:#0078b6;font-size:16px" >
-                        <span v-for="(item1,index) in item.recommendResult" :key="index" :data-id='item1.value' @click="topre_rec($event)" style="cursor:pointer">{{item1.value}}&ensp;</span>
-                      </td>
-                    </tr>
-                  </tbody>
-                 </table>
-                 </div>
-      </el-dialog>
     <!-- 实时大数据分析 -->
     <div class="recommend">实时大数据分析</div>
     <el-card class="box-card">
@@ -453,7 +435,7 @@ export default {
           });
       this.$ajax.post(this.idurl, data5).then(res => {
             this.afteruser.push(res.data)
-            //  console.log(this.afteruser)
+             console.log(this.afteruser)
           }).catch(res => {
             console.log(res);
           });
@@ -581,16 +563,15 @@ export default {
       
     },
 
-    analyze1(event) {     //传递智能分析选项卡与提示框的关系(清空输入框内容)
+    analyze1() {     //传递智能分析选项卡与提示框的关系(清空输入框内容)
       this.textarea2 = ""
       this.realAnalyzeData=[]
-      let target = event.currentTarget;
-      this.analyzeData_realname = target.getAttribute("data-id");
-      this.analyzeData_sendname = target.getAttribute("id");
-      // console.log(this.analyzeData_sendname)
     },
 
-    realAnalyze(){       //获取智能分析数据
+    realAnalyze(event){       //获取智能分析数据
+      let target = event.currentTarget;
+      this.analyzeData_sendname = target.getAttribute('data-id')
+
       let data1 = {text:this.textarea2}
       this.analyzeurl = ""
       // console.log(this.analyzeData_sendname)
@@ -641,7 +622,7 @@ export default {
               subtext: '',//副标题
               x:'center',//x轴方向对齐方式
               left:0,
-              top:75
+              top:25
           },
           tooltip : {
               trigger: 'item',
@@ -684,7 +665,7 @@ export default {
                   name: '',
                   type: 'pie',
                   radius:['0%','70%'],
-                  center: ['40%', '45%'],
+                  center: ['40%', '30%'],
                   data:[],
                   itemStyle: {
                       emphasis: {
@@ -712,7 +693,7 @@ export default {
           ],
       };
       
-      for(let i =0;i<this.afteruser.length;i++){   
+      for(let i =0;i<this.afteruser[0].recommendResult.length;i++){   
         this.chartOption0.series[0].data.push({name:this.afteruser[0].recommendResult[i].value,value:this.afteruser[0].recommendResult[i].count})
         this.chartOption0.legend.data.push(this.afteruser[0].recommendResult[i].value)
       }
@@ -724,7 +705,7 @@ export default {
               subtext: '',//副标题
               x:'center',//x轴方向对齐方式
               left:0,
-              top:75
+              top:25
           },
           tooltip : {
               trigger: 'item',
@@ -767,7 +748,7 @@ export default {
                   name: '',
                   type: 'pie',
                   radius:['0%','70%'],
-                  center: ['40%', '45%'],
+                  center: ['40%', '30%'],
                   data:[],
                   itemStyle: {
                       emphasis: {
@@ -795,7 +776,7 @@ export default {
           ],
       };
       
-      for(let i =0;i<this.afteruser.length;i++){   
+      for(let i =0;i<this.afteruser[0].recommendResult.length;i++){   
         this.chartOption1.series[0].data.push({name:this.afteruser[1].recommendResult[i].value,value:this.afteruser[1].recommendResult[i].count})
         this.chartOption1.legend.data.push(this.afteruser[1].recommendResult[i].value)
       }
@@ -808,7 +789,7 @@ export default {
               subtext: '',//副标题
               x:'center',//x轴方向对齐方式
               left:0,
-              top:75
+              top:25
           },
           tooltip : {
               trigger: 'item',
@@ -851,7 +832,7 @@ export default {
                   name: '',
                   type: 'pie',
                   radius:['0%','70%'],
-                  center: ['40%', '45%'],
+                  center: ['40%', '30%'],
                   data:[],
                   itemStyle: {
                       emphasis: {
@@ -879,7 +860,7 @@ export default {
           ],
       };
       
-      for(let i =0;i<this.afteruser.length;i++){   
+      for(let i =0;i<this.afteruser[0].recommendResult.length;i++){   
         this.chartOption2.series[0].data.push({name:this.afteruser[2].recommendResult[i].value,value:this.afteruser[2].recommendResult[i].count})
         this.chartOption2.legend.data.push(this.afteruser[2].recommendResult[i].value)
       }
@@ -892,7 +873,7 @@ export default {
               subtext: '',//副标题
               x:'center',//x轴方向对齐方式
               left:0,
-              top:75
+              top:25
           },
           tooltip : {
               trigger: 'item',
@@ -935,7 +916,7 @@ export default {
                   name: '',
                   type: 'pie',
                   radius:['0%','70%'],
-                  center: ['40%', '45%'],
+                  center: ['40%', '30%'],
                   data:[],
                   itemStyle: {
                       emphasis: {
@@ -963,7 +944,7 @@ export default {
           ],
       };
       
-      for(let i =0;i<this.afteruser.length;i++){   
+      for(let i =0;i<this.afteruser[0].recommendResult.length;i++){   
         this.chartOption3.series[0].data.push({name:this.afteruser[3].recommendResult[i].value,value:this.afteruser[3].recommendResult[i].count})
         this.chartOption3.legend.data.push(this.afteruser[3].recommendResult[i].value)
       }
@@ -976,7 +957,7 @@ export default {
               subtext: '',//副标题
               x:'center',//x轴方向对齐方式
               left:0,
-              top:75
+              top:25
           },
           tooltip : {
               trigger: 'item',
@@ -1019,7 +1000,7 @@ export default {
                   name: '',
                   type: 'pie',
                   radius:['0%','70%'],
-                  center: ['40%', '45%'],
+                  center: ['40%', '30%'],
                   data:[],
                   itemStyle: {
                       emphasis: {
@@ -1047,7 +1028,7 @@ export default {
           ],
       };
       
-      for(let i =0;i<this.afteruser.length;i++){   
+      for(let i =0;i<this.afteruser[0].recommendResult.length;i++){   
         this.chartOption4.series[0].data.push({name:this.afteruser[4].recommendResult[i].value,value:this.afteruser[4].recommendResult[i].count})
         this.chartOption4.legend.data.push(this.afteruser[4].recommendResult[i].value)
       }

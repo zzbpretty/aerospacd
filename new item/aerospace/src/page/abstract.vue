@@ -47,7 +47,7 @@
         <div class="c-data">{{abstractData.con_time}}</div>
       </div>
       <div class="c-c-content">
-        <p v-html="abstractData.keysentence"><span>摘要：&nbsp;</span>
+        <p v-html="abstractData.keysentence">
         {{abstractData.keysentence}}
         </p>
         <p><span>关键字：&nbsp;</span>{{abstractData.keyword}}</p>
