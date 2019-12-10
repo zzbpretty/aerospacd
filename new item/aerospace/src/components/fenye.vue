@@ -116,10 +116,11 @@
   </div>
 </template>
 <script>
-import Bus from "../assets/Bus";     //引入公共js，兄弟传值
-import Recommend from "./recommend";
-import Rank from "./rank";
+import Bus from "../assets/Bus";       //引入公共js，兄弟传值
+import Recommend from "./recommend";   //引入推荐组件
+import Rank from "./rank";             //引入排名组件
 export default {
+  //应用组件
   components: {
     Recommend,
     Rank
@@ -129,12 +130,13 @@ export default {
       tableData: [],    //搜索数据
       currentPage4: 1,  //当前页
       size: 20,         //每页多少条数据
-      total: 0         //总共多少条数据
+      total: 0          //总共多少条数据
     };
   },
 
   methods: {
-    handleSizeChange(val) {        //改变每页多少条数据
+    //改变每页多少条数据
+    handleSizeChange(val) {        
 
       let data1 = {
         type: this.$route.query.value,
@@ -155,7 +157,8 @@ export default {
           console.log(res);
         });
     },
-    handleCurrentChange(val) {    //改变当前第几页
+    //改变当前第几页
+    handleCurrentChange(val) {    
       
       let data1 = {
         type: this.$route.query.value,
@@ -174,8 +177,8 @@ export default {
           console.log(res);
         });
     },
-
-    toabstract(event) {        //跳转到详情页，并将数据信息绑定在url中
+    //跳转到详情页，并将数据信息绑定在url中
+    toabstract(event) {        
       let target = event.currentTarget ;
       let abstracthref= this.$router.resolve({
         path: "/list/abstract",
@@ -183,8 +186,8 @@ export default {
       });
       window.open(abstracthref.href,'_blank')
     },
-
-    topay(event){             //跳转到支付页，并将数据信息绑定在url中
+    //跳转到支付页，并将数据信息绑定在url中
+    topay(event){             
       let target = event.currentTarget;
       let payhref= this.$router.resolve({
         path: "/list/pay",
@@ -193,15 +196,17 @@ export default {
       window.open(payhref.href,'_blank')
     }
   },
-
+   //实例创建后执行的方法
    created() {
     var self = this;      //改变this指向
+    //接受search组件传的值
     Bus.$on("send", function(val) {
       self.tableData = val.data;
       self.total = val.total;
       // console.log(val.total)
     });
   },
+  //实例挂载后执行的方法
   mounted(){
     let data = {
         type: this.$route.query.value,
@@ -209,7 +214,7 @@ export default {
         size: 20,
         start: 0
       };
-      
+    //初始化搜索结果数据
     this.$ajax
         .post("http://192.168.100.44:8070/search/match", data)
         .then(res => {

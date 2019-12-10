@@ -1,16 +1,13 @@
 <template>
 <!-- 首页 -->
   <div class="backgound-home">
-    <!-- header start -->
+    <!-- 头部内容 -->
     <Header></Header>
-    <!-- header end -->
-    <!-- searchmain -->
+    <!-- 搜索框 -->
     <Search></Search>
-    <!-- searchmain -->
-    <!-- swiper -->
+    <!-- 轮播图 -->
     <Swiper></Swiper>
-    <!-- swiper -->
-    <!-- choose -->
+    <!-- 我的 -->
     <div class="choose">
       <div class="choose-content">
         <div class="choose-content-left">
@@ -38,12 +35,11 @@
         </div>
       </div>
     </div>
+    <!-- 回到顶部 -->
    
-    <!-- choose -->
-    <!-- to top -->
-    
-    <!-- to top -->
+    <!-- 底部栏 -->
     <Footer></Footer>
+    
   </div>
 </template>
 <script>
@@ -102,7 +98,7 @@ export default {
     background-color: #eaf2fd;
 }
 .menus li {
-    padding: 0 25px;
+    padding: 15px 25px;
     text-align: center;
     font-size: 16px;
     line-height: 48px;

@@ -68,10 +68,12 @@ export default {
     };
   },
   methods: {
-    showMessage(e) {  //当选项框改变时,用变量记录改变值
+    //当选项框改变时,用变量记录改变值
+    showMessage(e) {  
       this.label = e;
     },
-    submit() {        //搜索跳转
+    //搜索跳转,向fenye组件传值
+    submit() {        
       if ($("#keyword").val() == "") {
         $(".alert")
           .stop()
@@ -83,6 +85,7 @@ export default {
           size: 20,
           start: 0
         };
+
         this.$ajax
           .post(this.url, data1)
           .then(res => {
@@ -98,7 +101,9 @@ export default {
       }
     }
   },
+  //实例挂载后执行的函数
   mounted() {
+    //如果url上keyword部位undefined 就取出url中label和value的值放入type中,并把keyword填入搜索框中
     if (this.$route.query.keyword != undefined) {
       this.type = {
         label: this.$route.query.label,

@@ -1,5 +1,6 @@
 <template>
     <div>
+        <!-- 顶部栏内容 -->
         <div class="header">
             <div class="head-main">
                 <router-link to="/" class="link-home">

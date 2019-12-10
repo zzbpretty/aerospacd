@@ -1,0 +1,12 @@
+npm install font-awesome --save 引入字体图标
+npm install @fortawesome/fontawesome-svg-core --save 字体图标
+npm install @fortawesome/free-brands-svg-icons --save 字体图标
+npm install @fortawesome/free-regular-svg-icons --save 字体图标
+npm install @fortawesome/free-solid-svg-icons  --save 字体图标
+npm install @fortawesome/vue-fontawesome --save 字体图标
+npm install axios --save 下载axios，一个基于http的request请求库
+npm install echarts --save 引入echarts图表
+npm install element-ui --save 引入elementUI网站快速生成工具
+npm install install vue --save 引入vue
+npm install vue-router --save 引入vue-router路由组件
+npm install jquery --save  引入jquery插件

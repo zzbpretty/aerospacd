@@ -1,12 +1,13 @@
 <template>
 <!-- 搜索结果页 -->
     <div>
+    <!-- 头部内容 -->
     <Header></Header>
+    <!-- 搜索框 -->
     <Search></Search>
-    <!-- detail -->
+    <!-- 搜索内容 -->
     <Fenye></Fenye>
-    
-    <!-- detail -->
+    <!-- 底部内容 -->
     <Footer></Footer>
     </div>
 </template>

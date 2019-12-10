@@ -1,7 +1,9 @@
 <template>
 <!-- 支付页 -->
   <div>
+    <!-- 头部内容 -->
     <Header></Header>
+    <!-- 搜索框 -->
     <Search></Search>
     <div class="c-content">
       <div class="c-title">
@@ -29,7 +31,7 @@
         </div>
       </div>
     </div>
-
+    <!-- 底部内容 -->
     <Footer></Footer>
   </div>
 </template>
@@ -45,10 +47,13 @@ export default {
   },
   data() {
     return {
+      // 摘要接口返回的数据
       abstractData: [],
+      // 摘要接口url
       payurl:"http://192.168.100.44:8070/search/abstract/"
     };
   },
+  // 实例挂载后执行的函数
   mounted() {
     let data1 = { data_id: this.$route.query.con_title };
 

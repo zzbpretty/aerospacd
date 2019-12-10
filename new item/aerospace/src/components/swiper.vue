@@ -1,5 +1,5 @@
 <template>
-<!-- 首页轮播图 -->
+  <!-- 首页轮播图 -->
   <div class="swiper">
     <div class="swiper-box">
       <div class="content">
@@ -28,7 +28,6 @@
             <li>
               <span>专利：</span> 中国专利0项；海外专利0项
             </li>
-
           </ul>
         </div>
         <!-- right -->
@@ -37,32 +36,32 @@
           <div class="sw-content">
             <span class="btn-prev1"></span>
             <span class="btn-next1"></span>
-          <div class="win">
-            <ul class="ul">
-              <li>
-                <img src="../assets/img/xinhangtian1.png" alt />
-              </li>
-              <li>
-                <img src="../assets/img/xinhangtian2.png" alt />
-              </li>
-              <li>
-                <img src="../assets/img/xinhangtian3.png" alt />
-              </li>
-              <li>
-                <img src="../assets/img/xinhangtian4.png" alt />
-              </li>
-              <li>
-                <img src="../assets/img/xinhangtian1.png" alt />
-              </li>
-            </ul>
-            <ol style="display:none">
-              <li class="li active"></li>
-              <li class="li"></li>
-              <li class="li"></li>
-              <li class="li"></li>
-            </ol>
+            <div class="win">
+              <ul class="ul">
+                <li>
+                  <img src="../assets/img/xinhangtian1.png" alt />
+                </li>
+                <li>
+                  <img src="../assets/img/xinhangtian2.png" alt />
+                </li>
+                <li>
+                  <img src="../assets/img/xinhangtian3.png" alt />
+                </li>
+                <li>
+                  <img src="../assets/img/xinhangtian4.png" alt />
+                </li>
+                <li>
+                  <img src="../assets/img/xinhangtian1.png" alt />
+                </li>
+              </ul>
+              <ol style="display:none">
+                <li class="li active"></li>
+                <li class="li"></li>
+                <li class="li"></li>
+                <li class="li"></li>
+              </ol>
+            </div>
           </div>
-         </div>
           <!-- 外文 -->
           <div class="world-cnki">
             <div class="subcaption">
@@ -78,6 +77,7 @@
           </div>
         </div>
       </div>
+      <!-- 收起功能键 -->
       <a href="javascript:void(0)" class="is-down" title="收起"></a>
     </div>
   </div>
@@ -85,6 +85,7 @@
 
 <script>
 export default {
+  // 实例挂载后执行的函数
   mounted() {
     let bool = true;
     // 点击收缩显示功能
@@ -108,141 +109,147 @@ export default {
       }
     });
 
-  // swiper功能
-var index = 0;
-var timer;
-var otimer;
+    // swiper功能
+    var index = 0;
+    var timer;
+    var otimer;
 
-$(".btn-next1").click(function() {
-  clearInterval(timer);
-  clearTimeout(otimer);
-  
-  if (index == 4) {
-    $(".ul").css("left", "0px");
-    index = 1;
-  } else {
-    index++;
-  }
-  $(".ul")
-    .stop()
-    .animate(
-      {
-        left: -index * 500 + "px"
-      },
-      1000
-    );
-  if (index == 4) {
-    $(".li")
-      .eq(0)
-      .prop("class", "li active")
-      .siblings()
-      .prop("class", "li");
-  } else {
-    $(".li")
-      .eq(index)
-      .prop("class", "li active")
-      .siblings()
-      .prop("class", "li");
-  }
-  ys();
-});
+    //点击向后一页 
+    $(".btn-next1").click(function() {
+      clearInterval(timer);
+      clearTimeout(otimer);
 
-$(".btn-prev1").click(function() {
-  clearInterval(timer);
-  clearTimeout(otimer);
-  if (index == 0) {
-    $(".ul").css("left", "-2000px");
-    index = 3;
-  } else {
-    index--;
-  }
-  $(".ul")
-    .stop()
-    .animate(
-      {
-        left: -index * 500 + "px"
-      },
-      1000
-    );
-  $(".li")
-    .eq(index)
-    .prop("class", "li active")
-    .siblings()
-    .prop("class", "li");
-  ys();
-});
+      if (index == 4) {
+        $(".ul").css("left", "0px");
+        index = 1;
+      } else {
+        index++;
+      }
+      $(".ul")
+        .stop()
+        .animate(
+          {
+            left: -index * 500 + "px"
+          },
+          1000
+        );
+      if (index == 4) {
+        $(".li")
+          .eq(0)
+          .prop("class", "li active")
+          .siblings()
+          .prop("class", "li");
+      } else {
+        $(".li")
+          .eq(index)
+          .prop("class", "li active")
+          .siblings()
+          .prop("class", "li");
+      }
+      ys();
+    });
 
-$(".li").mouseenter(function() {
-  clearInterval(timer);
-  clearTimeout(otimer);
-  index = $(this).index();
-  $(this)
-    .prop("class", "li active")
-    .siblings()
-    .prop("class", "li");
-  $(".ul")
-    .stop()
-    .animate(
-      {
-        left: -index * 500 + "px"
-      },
-      1000
-    );
-});
-$(".li").mouseout(function() {
-  ys();
-});
-
-var bian = function() {
-  $(".li").prop("class", "li");
-  if (index == 4) {
-    $(".ul").css("left", "0px");
-    index = 1;
-  } else {
-    index++;
-  }
-  $(".li").prop("class", "li active");
-  $(".ul")
-    .stop()
-    .animate(
-      {
-        left: -index * 500 + "px"
-      },
-      1000
-    );
-  if (index == 4) {
-    $(".li")
-      .eq(0)
-      .prop("class", "li active")
-      .siblings()
-      .prop("class", "li");
-  } else {
-    $(".li")
-      .eq(index)
-      .prop("class", "li active")
-      .siblings()
-      .prop("class", "li");
+    // 点击向前一页
+    $(".btn-prev1").click(function() {
+      clearInterval(timer);
+      clearTimeout(otimer);
+      if (index == 0) {
+        $(".ul").css("left", "-2000px");
+        index = 3;
+      } else {
+        index--;
+      }
+      $(".ul")
+        .stop()
+        .animate(
+          {
+            left: -index * 500 + "px"
+          },
+          1000
+        );
+      $(".li")
+        .eq(index)
+        .prop("class", "li active")
+        .siblings()
+        .prop("class", "li");
+      ys();
+    });
+    
+    //鼠标划入轮播图暂停 
+    $(".li").mouseenter(function() {
+      clearInterval(timer);
+      clearTimeout(otimer);
+      index = $(this).index();
+      $(this)
+        .prop("class", "li active")
+        .siblings()
+        .prop("class", "li");
+      $(".ul")
+        .stop()
+        .animate(
+          {
+            left: -index * 500 + "px"
+          },
+          1000
+        );
+    });
+    $(".li").mouseout(function() {
+      ys();
+    });
+    
+    // 轮播图动的方法
+    var bian = function() {
+      $(".li").prop("class", "li");
+      if (index == 4) {
+        $(".ul").css("left", "0px");
+        index = 1;
+      } else {
+        index++;
+      }
+      $(".li").prop("class", "li active");
+      $(".ul")
+        .stop()
+        .animate(
+          {
+            left: -index * 500 + "px"
+          },
+          1000
+        );
+      if (index == 4) {
+        $(".li")
+          .eq(0)
+          .prop("class", "li active")
+          .siblings()
+          .prop("class", "li");
+      } else {
+        $(".li")
+          .eq(index)
+          .prop("class", "li active")
+          .siblings()
+          .prop("class", "li");
+      }
+    };
+    // 定时器
+    var ds = function() {
+      timer = setInterval(bian, 4000);
+    };
+    // 延时器
+    var ys = function() {
+      otimer = setTimeout(ds, 2000);
+    };
+    // 默认播放
+    ds();
+    // 销毁定时器
+    this.$once("hook:beforeDestroy", () => {
+      clearInterval(timer);
+    });
   }
 };
-
-var ds = function() {
-  timer = setInterval(bian, 4000);
-};
-var ys = function() {
-  otimer = setTimeout(ds, 2000);
-};
-ds()
-this.$once('hook:beforeDestroy', () => {            
-    clearInterval(timer);                                    
-})
-  }
-};
-
 </script>
 
 <style>
 .swiper {
-    margin-top: 15px;
+  margin-top: 15px;
   margin-bottom: 40px;
 }
 /* .swiper-box {
@@ -330,10 +337,10 @@ this.$once('hook:beforeDestroy', () => {
   width: 708px;
 }
 .btn-prev1:hover {
-    background-position: left top;
+  background-position: left top;
 }
-.btn-next1:hover{
-    background-position: right top;
+.btn-next1:hover {
+  background-position: right top;
 }
 .btn-prev1 {
   left: -25px;
@@ -397,8 +404,8 @@ a {
   cursor: pointer;
   outline: none;
 }
-.sw-content{
-    position: relative;
+.sw-content {
+  position: relative;
 }
 .win {
   width: 500px;
@@ -408,10 +415,10 @@ a {
   overflow: hidden;
   opacity: 0.8;
 }
-.win-content{
-    width: 500px;
-    height: 200px;
-    margin: 0 auto;
+.win-content {
+  width: 500px;
+  height: 200px;
+  margin: 0 auto;
 }
 .ul {
   width: 2500px;
@@ -455,5 +462,4 @@ ol > li {
   background-color: white;
   border-radius: 50%;
 }
-
 </style>

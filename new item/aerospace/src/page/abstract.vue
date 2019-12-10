@@ -4,40 +4,55 @@
     <div class="zhezhao"></div>
     <!-- 下载 -->
     <div class="alert-box download_box">
-        <div class="download_content">
-          <a href="javascript:;" class="pop_close">X</a>
-          <div class="resource_title">
-            <h3>{{abstractData.con_title}}</h3>
-          </div>
-
-          <div class="normal_tips">
-            <ul>
-              <li>
-                <p class="asset_name">资源所需积分</p>
-                <p class="asset_point color_y">15</p>
-              </li>
-              <li>
-                <p class="asset_name">当前拥有积分</p>
-                <p class="asset_point color_r">168</p>
-              </li>
-            </ul>
-
-            <p class="cost_tips">下载本篇内容会消耗15积分</p>
-          </div>
-
-          <div class="dl_xunlei_tips">为了良好体验，不建议使用迅雷下载</div>
-          <div class="resource_dl_btn">
-            <a v-if="(this.$route.query.data_type == 'html')"  :href="'http://192.168.100.44:8070/search/context/'+ this.$route.query.con_title" download="this.$route.query.con_title" class="dl_btn">立即下载</a>
-            <a v-else :href="'http://192.168.100.44:8070/search/downloadFile/'+ this.$route.query.con_title" download="this.$route.query.con_title" class="dl_btn">立即下载</a>
-          </div>
+      <div class="download_content">
+        <a href="javascript:;" class="pop_close">X</a>
+        <div class="resource_title">
+          <h3>{{abstractData.con_title}}</h3>
         </div>
+
+        <div class="normal_tips">
+          <ul>
+            <li>
+              <p class="asset_name">资源所需积分</p>
+              <p class="asset_point color_y">15</p>
+            </li>
+            <li>
+              <p class="asset_name">当前拥有积分</p>
+              <p class="asset_point color_r">168</p>
+            </li>
+          </ul>
+
+          <p class="cost_tips">下载本篇内容会消耗15积分</p>
+        </div>
+
+        <div class="dl_xunlei_tips">为了良好体验，不建议使用迅雷下载</div>
+        <div class="resource_dl_btn">
+          <a
+            v-if="(this.$route.query.data_type == 'html')"
+            :href="'http://192.168.100.44:8070/search/context/'+ this.$route.query.con_title"
+            download="this.$route.query.con_title"
+            class="dl_btn"
+          >立即下载</a>
+          <a
+            v-else
+            :href="'http://192.168.100.44:8070/search/downloadFile/'+ this.$route.query.con_title"
+            download="this.$route.query.con_title"
+            class="dl_btn"
+          >立即下载</a>
+        </div>
+      </div>
     </div>
     <!-- 阅读 -->
     <div class="alert-img">
-        <a href="javascript:void(0)" class="pop_close1">X</a>
-        <img :src="'http://192.168.100.44:8070/search/downloadFile/' + this.$route.query.con_title" alt="">
+      <a href="javascript:void(0)" class="pop_close1">X</a>
+      <img
+        :src="'http://192.168.100.44:8070/search/downloadFile/' + this.$route.query.con_title"
+        alt
+      />
     </div>
+    <!-- 头部内容 -->
     <Header></Header>
+    <!-- 搜索框 -->
     <Search></Search>
     <!-- 摘要内容 -->
     <div class="c-content">
@@ -47,29 +62,31 @@
         <div class="c-data">{{abstractData.con_time}}</div>
       </div>
       <div class="c-c-content">
-        <p v-html="abstractData.keysentence">
-        {{abstractData.keysentence}}
+        <p v-html="abstractData.keysentence">{{abstractData.keysentence}}</p>
+        <p>
+          <span>关键字：&nbsp;</span>
+          {{abstractData.keyword}}
         </p>
-        <p><span>关键字：&nbsp;</span>{{abstractData.keyword}}</p>
       </div>
       <div class="c-c-footer">
         <div class="download">
-            <a href="javascritp:void(0)" class="downloadshow">
-          <span>立即下载</span>
+          <a href="javascritp:void(0)" class="downloadshow">
+            <span>立即下载</span>
           </a>
         </div>
         <div class="read">
-          <a href="javascript:void(0)"  class="readstart">
+          <a href="javascript:void(0)" class="readstart">
             <span>开始阅读</span>
           </a>
         </div>
       </div>
     </div>
+    <!-- 底部内容 -->
     <Footer></Footer>
   </div>
 </template>
 <script>
-import Header from "../components/header";
+import Header from "../components/header";  
 import Footer from "../components/footer";
 import Search from "../components/search";
 export default {
@@ -80,69 +97,75 @@ export default {
   },
   data() {
     return {
-      abstractData: [],    //摘要返回数据
-      datatype:"",         //数据类型(html/pdf) 
-      abstracturl:"http://192.168.100.44:8070/search/abstract/",  
-      pdfurl:'http://192.168.100.44:8070/search/downloadFile/',
-      // abstractContent:abstractData.con_title
+      //摘要返回数据
+      abstractData: [], 
+      //数据类型(html/pdf)
+      datatype: "", 
+      // 摘要请求接口
+      abstracturl: "http://192.168.100.44:8070/search/abstract/",
+      // pdf请求接口
+      pdfurl: "http://192.168.100.44:8070/search/downloadFile/"
     };
   },
+  // 实例挂载后执行的函数
+  mounted() {
+    //用变量dataType保存文件类型
+    this.datatype = this.$route.query.data_type; 
 
-  created(){
-    
-  },
-  methods:{
-    download(){
+    let data1 = { data_id: this.$route.query.con_title };
 
-    }
-  },
-  mounted(){
-     this.datatype = this.$route.query.data_type       //用变量dataType保存文件类型
-     let data1 = { data_id: this.$route.query.con_title };
-
-     this.$ajax
-      .get(this.abstracturl+data1.data_id)
+    this.$ajax
+      .get(this.abstracturl + data1.data_id)
       .then(res => {
         this.abstractData = res.data;
-        this.abstractData.con_time = this.abstractData.con_time.substr(0,this.abstractData.con_time.indexOf("T"));
+        this.abstractData.con_time = this.abstractData.con_time.substr(
+          0,
+          this.abstractData.con_time.indexOf("T")
+        );
         // console.log(this.abstractData.keysentence)
       })
       .catch(res => {
         console.log(res);
       });
 
-      // 遮罩和下载弹窗内容
-      $('.downloadshow').click(function(){
-          $('.zhezhao').attr('style','display:block')
-          $('.download_box').attr('style','display:block')
-      })
+    // 遮罩和下载弹窗内容
+    $(".downloadshow").click(function() {
+      $(".zhezhao").attr("style", "display:block");
+      $(".download_box").attr("style", "display:block");
+    });
 
-      // 关闭遮罩和下载弹窗内容
-      $('.pop_close').click(function(){
-          $('.zhezhao').attr('style','display:none')
-          $('.download_box').attr('style','display:none') 
-      })
-      
-      var self = this;  //改变this指向
+    // 关闭遮罩和下载弹窗内容
+    $(".pop_close").click(function() {
+      $(".zhezhao").attr("style", "display:none");
+      $(".download_box").attr("style", "display:none");
+    });
+    
+     //改变this指向
+    var self = this;
 
-      $('.readstart').click(function(){    //阅读判断是否是pdf类型，如果是则执行pdf.js
-        if(self.datatype == "pdf" ){
-           window.open('../../static/pdf.js-gh-pages/web/viewer.html?file='+ self.pdfurl +self.$route.query.con_title,'PDF','width:50%;height:50%;top:0;left:100;');
-        }else{
-           $('.zhezhao').attr('style','display:block')
-           $('.alert-img').attr('style','display:block')
-        }
-      })
+    $(".readstart").click(function() {
+      //阅读判断是否是pdf类型，如果是则执行pdf.js
+      if (self.datatype == "pdf") {
+        window.open(
+          "../../static/pdf.js-gh-pages/web/viewer.html?file=" +
+            self.pdfurl +
+            self.$route.query.con_title,
+          "PDF",
+          "width:50%;height:50%;top:0;left:100;"
+        );
+      } else {
+        $(".zhezhao").attr("style", "display:block");
+        $(".alert-img").attr("style", "display:block");
+      }
+    });
 
-      // 关闭遮罩和快照弹窗内容
-      $('.pop_close1').click(function(){
-          $('.zhezhao').attr('style','display:none')
-          $('.alert-img').attr('style','display:none')
-      })
-  },
+    // 关闭遮罩和快照弹窗内容
+    $(".pop_close1").click(function() {
+      $(".zhezhao").attr("style", "display:none");
+      $(".alert-img").attr("style", "display:none");
+    });
+  }
 };
-
-
 </script>
 <style >
 .c-content {
@@ -185,7 +208,7 @@ export default {
   font: normal 18px/200% "Microsoft Yahei";
   font: 16px/2 "Microsoft Yahei";
 }
-.c-c-content p span{
+.c-c-content p span {
   color: #666;
   font-weight: 800;
 }
@@ -262,137 +285,137 @@ export default {
   display: none;
 }
 .download_box {
-    width: 500px;
-    transform: none;
-    margin-left: -250px;
-    top: 20%;
-    display: none;
+  width: 500px;
+  transform: none;
+  margin-left: -250px;
+  top: 20%;
+  display: none;
 }
 .alert-box {
-    padding: 16px;
-    position: fixed;
-    left: 50%;
-    box-sizing: border-box;
-    background: #fff;
-    border: 1px solid #e3e3e3;
-    box-shadow: 0 2px 4px 0 rgba(0,0,0,.1);
-    z-index: 10001;
+  padding: 16px;
+  position: fixed;
+  left: 50%;
+  box-sizing: border-box;
+  background: #fff;
+  border: 1px solid #e3e3e3;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+  z-index: 10001;
 }
 .download_box .download_content {
-    position: relative;
+  position: relative;
 }
 .download_content .pop_close {
-    position: absolute;
-    color: #333;
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    right: 0;
-    background: #e5e5e5;
-    top: -44px;
-    text-align: center;
-    line-height: 28px;
-    font-size: 16px;
+  position: absolute;
+  color: #333;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  right: 0;
+  background: #e5e5e5;
+  top: -44px;
+  text-align: center;
+  line-height: 28px;
+  font-size: 16px;
 }
 .download_box .download_content .pop_close:after {
-    content: '';
-    display: block;
-    width: 2px;
-    height: 20px;
-    background-color: #e5e5e5;
-    top: 28px;
-    position: absolute;
-    left: 13px;
+  content: "";
+  display: block;
+  width: 2px;
+  height: 20px;
+  background-color: #e5e5e5;
+  top: 28px;
+  position: absolute;
+  left: 13px;
 }
 .download_box .download_content .resource_title h3 {
-    padding-top: 20px;
-    font-size: 18px;
-    line-height: 28px;
-    height: 48px;
-    color: #4f4f4f;
-    text-align: center;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+  padding-top: 20px;
+  font-size: 18px;
+  line-height: 28px;
+  height: 48px;
+  color: #4f4f4f;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .download_box .download_content .normal_tips {
-    margin-top: 15px;
+  margin-top: 15px;
 }
 .download_box .download_content .normal_tips ul {
-    line-height: 28px;
-    text-align: center;
+  line-height: 28px;
+  text-align: center;
 }
 .download_box .download_content .normal_tips ul li {
-    display: inline-block;
-    width: 120px;
+  display: inline-block;
+  width: 120px;
 }
 .download_box .download_content .normal_tips ul li .asset_name {
-    font-size: 14px;
-    color: #999;
+  font-size: 14px;
+  color: #999;
 }
 .download_box .download_content .normal_tips ul li .asset_point {
-    font-size: 20px;
-    font-weight: 400;
+  font-size: 20px;
+  font-weight: 400;
 }
 .download_box .download_content .normal_tips .color_y {
-    color: #f90;
+  color: #f90;
 }
 .download_box .download_content .normal_tips .color_r {
-    color: #ca0c16;
+  color: #ca0c16;
 }
 .download_box .download_content .normal_tips .cost_tips {
-    font-size: 18px;
-    color: #4d4d4d;
-    text-align: center;
-    margin: 8px 0;
+  font-size: 18px;
+  color: #4d4d4d;
+  text-align: center;
+  margin: 8px 0;
 }
 .download_box .download_content .dl_xunlei_tips {
-    text-align: center;
-    font-size: 12px;
-    color: #333;
-    margin-top: 8px;
+  text-align: center;
+  font-size: 12px;
+  color: #333;
+  margin-top: 8px;
 }
 .download_box .download_content .resource_dl_btn {
-    text-align: center;
-    padding: 20px 0 30px;
+  text-align: center;
+  padding: 20px 0 30px;
 }
 .download_box .download_content .resource_dl_btn .dl_btn {
-    display: inline-block;
-    height: 38px;
-    line-height: 38px;
-    padding: 0 44px;
-    background: #ca0c16;
-    font-size: 16px;
-    color: #fff;
-    border-radius: 4px;
+  display: inline-block;
+  height: 38px;
+  line-height: 38px;
+  padding: 0 44px;
+  background: #ca0c16;
+  font-size: 16px;
+  color: #fff;
+  border-radius: 4px;
 }
-.alert-img{
-    position: absolute;
-    width: 90%;
-    /* height: 2000px; */
-    left: 50%;
-    margin-left: -45%;
-    z-index: 100002;
-    display: none;
-    text-align: center;
+.alert-img {
+  position: absolute;
+  width: 90%;
+  /* height: 2000px; */
+  left: 50%;
+  margin-left: -45%;
+  z-index: 100002;
+  display: none;
+  text-align: center;
 }
-.alert-img img{
-    width: auto;
-    height: auto;
-    max-width: 100%;
-    max-height: 100%;
+.alert-img img {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
 }
 .pop_close1 {
-    position: absolute;
-    color: #333;
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    right: -30px;
-    background: #e5e5e5;
-    top: 0x;
-    text-align: center;
-    line-height: 28px;
-    font-size: 16px;
+  position: absolute;
+  color: #333;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  right: -30px;
+  background: #e5e5e5;
+  top: 0x;
+  text-align: center;
+  line-height: 28px;
+  font-size: 16px;
 }
 </style>

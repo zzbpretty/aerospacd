@@ -1,7 +1,7 @@
 <template>
     <div>
+        <!-- 页面底部栏 -->
         <div class="footer">
-
             <div class="foot-top">
                 <ul class="foot-content">
                     <li>
@@ -71,9 +71,8 @@
                     <span>KDN 平台基础技术由 KBASE 11.0 提供.</span>
                 </div>
             </div>
-            <!--foot-bot-->
         </div>
-    <!-- footer -->
+    <!-- 页面底部栏 -->
 
     </div>
 </template>
@@ -82,7 +81,7 @@ export default {
 
 }
 </script>
-<style scoped>
+<style>
  /* footer */
 .footer {
     width: 100%;

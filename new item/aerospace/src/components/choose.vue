@@ -4,6 +4,7 @@
     <p class="result-tip">
       <router-link to="/cdetail">推荐新闻</router-link>
     </p>
+    <!-- 推荐内容 -->
     <el-tabs v-model="activeTitle" type="card" @tab-click="handleClick">
       <el-tab-pane v-for="(item,index) in chooseData" :key="index"  :label="item.title" :name="item.title">
         <div class="choose-box" v-for="(item1,index) in item.content" :key="index">
@@ -11,7 +12,6 @@
           <p class="choose-p">
             <span>责编：{{item1[1].con_author}}</span>|
             <span>来源：{{item1[2].con_from}}</span>
-            <!-- <em>{{item1[4].con_type}}</em> -->
           </p>
           <p class="abstract">{{item1[5].con_abstract}}</p>
           <div class="choose-bottom">
@@ -31,7 +31,9 @@
 export default {
   data() {
     return {
+      // 默认选中选项卡title
       activeTitle: "航天科技",
+      // 模拟推荐新闻数据
       chooseData: [
         {
           title: "航天科技",
@@ -237,6 +239,7 @@ export default {
     };
   },
   methods: {
+    // 切换选项卡方法
     handleClick(tab, event) {
       // console.log(tab, event);
     }
@@ -322,8 +325,6 @@ export default {
     float: right;
     margin-right: 20px;
     color: #999999;
-   
-    
 }
 .choose-bottom ul li:nth-child(2){
      border-right:#9999a2 1px solid ;
