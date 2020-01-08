@@ -148,7 +148,7 @@ export default {
       this.size = val;
 
       this.$ajax
-        .post("http://192.168.100.44:8070/search/match", data1)
+        .post("http://192.168.100.44:8772/search/match", data1)
         .then(res => {
           this.tableData = res.data.data;
           this.total = res.data.total;
@@ -168,7 +168,7 @@ export default {
       };
 
       this.$ajax
-        .post("http://192.168.100.44:8070/search/match", data1)
+        .post("http://192.168.100.44:8772/search/match", data1)
         .then(res => {
           this.tableData = res.data.data;
           this.total = res.data.total;

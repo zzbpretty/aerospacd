@@ -20,7 +20,8 @@
               type="primary"
               style="margin-top:10px;"
               :data-id="item.sendname"
-              @click="realAnalyze($event)"
+              @click="realAnalyze($event,index)"
+              :class="activeClass == index ? 'btn-active' : ''"
             >{{item.realname}}</el-button>
           </li>
         </ul>
@@ -297,6 +298,7 @@ require("echarts/lib/component/title");
 export default {
   data() {
     return {
+      activeClass:-1,
       // 时间选择器
       pickerOptions: {
         shortcuts: [
@@ -342,23 +344,23 @@ export default {
       //精准推荐的用户信息
       frontuser: [
         {
-          userName: "小明",
+          userName: "秦立河",
           userId: "110000"
         },
         {
-          userName: "安东",
+          userName: "倪会艳",
           userId: "310000"
         },
         {
-          userName: "Alice",
+          userName: "孙金萍",
           userId: "440000"
         },
         {
-          userName: "Jack",
+          userName: "刘东海",
           userId: "320000"
         },
         {
-          userName: "小李",
+          userName: "张丕红",
           userId: "330000"
         }
       ],
@@ -373,9 +375,9 @@ export default {
       centerDialogVisible2: false, //提示框默认隐藏
       centerDialogVisible3: false, //提示框默认隐藏
       //精准推荐的后端接口
-      idurl: "http://192.168.100.41:8772/searchPage/recommendResult",
+      idurl: "http://192.168.100.44:8772/searchPage/recommendResult",
       //新词发现的后端接口
-      timeurl: "http://192.168.100.41:8772/searchPage/newWord",
+      timeurl: "http://192.168.100.44:8772/searchPage/newWord",
       //智能分析的后端接口关键词
       analyzeurl: "",
       //新词发现数据
@@ -529,15 +531,11 @@ export default {
   },
   // 实例创建后执行的方法
   created() {
-    let data1 = { userName: "小明", userId: 110000, recommendType: "realTime" };
-    let data2 = { userName: "安东", userId: 310000, recommendType: "realTime" };
-    let data3 = {
-      userName: "Alice",
-      userId: 440000,
-      recommendType: "realTime"
-    };
-    let data4 = { userName: "Jack", userId: 320000, recommendType: "realTime" };
-    let data5 = { userName: "小李", userId: 330000, recommendType: "realTime" };
+    let data1 = { userName: "秦立河", userId: 110000, recommendType: "realTime" };
+    let data2 = { userName: "倪会艳", userId: 310000, recommendType: "realTime" };
+    let data3 = {userName: "孙金萍",userId: 440000,recommendType: "realTime"};
+    let data4 = { userName: "刘东海", userId: 320000, recommendType: "realTime" };
+    let data5 = { userName: "张丕红", userId: 330000, recommendType: "realTime" };
     this.$ajax
       .post(this.idurl, data1)
       .then(res => {
@@ -718,7 +716,8 @@ export default {
       this.realAnalyzeData = [];
     },
     //获取智能分析数据
-    realAnalyze(event) {
+    realAnalyze(event,index) {
+      this.activeClass = index
       let target = event.currentTarget;
       this.analyzeData_sendname = target.getAttribute("data-id");
 
@@ -739,7 +738,7 @@ export default {
       }
       // console.log(this.analyzeurl)
       this.$ajax
-        .post("http://192.168.100.41:80/ds/" + this.analyzeurl, data1)
+        .post("http://192.168.100.44:80/ds/" + this.analyzeurl, data1)
         .then(res => {
           this.realAnalyzeData = res.data;
           // console.log(this.realAnalyzeData)
@@ -1248,7 +1247,23 @@ export default {
   margin: 10px auto;
 }
 .item:hover {
-  color: #409eff !important;
+  color: #66B20E !important;
+  cursor: pointer !important;
+}
+.el-button--primary:active {
+  background: #66B20E !important;
+  cursor: pointer !important;
+}
+.el-button--primary:hover {
+  background: #66B20E !important;
+  cursor: pointer !important;
+}
+.el-button--primary:visited {
+  background: #66B20E !important;
+  cursor: pointer !important;
+}
+.el-button--primary:focus {
+  background: #66B20E !important;
   cursor: pointer !important;
 }
 .text a:hover {
@@ -1343,5 +1358,8 @@ export default {
   width: 320px;
   min-height: 250px;
   margin-bottom: 10px;
+}
+.btn-active{
+  background: #66B20E
 }
 </style>

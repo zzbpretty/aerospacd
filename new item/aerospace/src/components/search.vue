@@ -3,7 +3,7 @@
     <!-- 搜索逻辑 -->
     <div class="searchmain">
       <div style="margin-top: 15px;">
-        <el-input placeholder="请输入内容" id="keyword" v-model="keyword" class="input-with-select">
+        <el-input placeholder="请输入内容" id="keyword" v-model="keyword" class="input-with-select" @keyup.enter.native='submit'>
           <el-select
             v-model="type"
             id="type"

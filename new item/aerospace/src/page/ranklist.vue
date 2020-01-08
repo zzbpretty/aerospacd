@@ -181,7 +181,7 @@ export default {
       //改变标题
       ranktitle: "", 
       //大数据分析接口
-      rankurl: "http://192.168.100.41:8772/searchPage/bigDataExhibition", 
+      rankurl: "http://192.168.100.44:8772/searchPage/bigDataExhibition", 
       //保存不同类型url里的con_title
       con_title: "", 
       //修改不同con_title数据的数据内容列的样式
