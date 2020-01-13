@@ -5,7 +5,7 @@
       <div class="content">
         <!-- left -->
         <div class="category-left category-cooperatelib">
-          <h1 style="color:#0ba2eb">学术文献总库包括</h1>
+          <h1 style="color:rgb(32, 241, 125);font-size:24px;">学术文献总库包括</h1>
           <ul class="all-docdata">
             <li>
               <span>SCI：</span> 0篇
@@ -296,10 +296,11 @@ export default {
   min-width: 163px;
   line-height: 30px;
   color: #e8fbfa;
+  font-size: 18px;
 }
 .all-docdata li span {
   margin-right: 5px;
-  font-size: 15px;
+  font-size: 20px;
   color: #61eee5;
 }
 

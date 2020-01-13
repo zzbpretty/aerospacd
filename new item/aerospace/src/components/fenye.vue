@@ -26,7 +26,7 @@
               <template slot-scope="scope">
                 <span
                   v-html="scope.row.con_author"
-                  style="line-height: 1.5;word-wrap: break-word;color: #222;font-size:12px"
+                  style="line-height: 1.5;word-wrap: break-word;color: #222"
                 ></span>
               </template>
             </el-table-column>
@@ -83,7 +83,7 @@
                 </p>
                <p class="abstract" v-html="item.con_text">{{item.con_text}}</p>
                <div class="choose-bottom">
-                 <span style="color:#f60">发表时间：{{item.con_time.substr(0,item.con_time.indexOf('T'))}}</span>
+                 <span style="color:#777">发表时间：{{item.con_time.substr(0,item.con_time.indexOf('T'))}}</span>
                  <ul>
                    <li style="cursor:pointer" :data-id="item.data_id"  @click="toabstract($event)" :id="item.data_type">
                      <i class="fa fa-book" aria-hidden="true" style="color:#74a2f2" title="查看"></i>&ensp;<span>查&nbsp;看</span>
@@ -148,7 +148,7 @@ export default {
       this.size = val;
 
       this.$ajax
-        .post("http://192.168.100.44:8772/search/match", data1)
+        .post("http://192.168.100.44:8070/search/match", data1)
         .then(res => {
           this.tableData = res.data.data;
           this.total = res.data.total;
@@ -168,7 +168,7 @@ export default {
       };
 
       this.$ajax
-        .post("http://192.168.100.44:8772/search/match", data1)
+        .post("http://192.168.100.44:8070/search/match", data1)
         .then(res => {
           this.tableData = res.data.data;
           this.total = res.data.total;
@@ -365,7 +365,7 @@ export default {
   margin-bottom: 5px;
   line-height: 24px;
   font-size: 14px;
-  color: #3f4a5e;
+  color: #777;
 }
 .choose-p span:nth-child(1) {
   padding-right: 15px;
@@ -385,7 +385,7 @@ export default {
 }
 .abstract {
   line-height: 20px;
-  color: #777;
+  color: #3f4a5e;
   word-break: break-all;
   text-justify: inter-ideograph;
   text-align: justify;
@@ -434,5 +434,7 @@ export default {
 .container-content tbody .el-table_1_column_1 .cell {
   text-align:left
 }
-
+.el-table{
+  font-size: 16px
+}
 </style>

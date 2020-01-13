@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 智能分析 -->
-    <div class="recommend">
+    <div class="recommend" style="margin-top:25px">
       <el-button type="text" @click="analyze1;centerDialogVisible2 = true">智能分析</el-button>
     </div>
     <el-dialog title="智能分析" :visible.sync="centerDialogVisible2" width="40%" center>
@@ -141,7 +141,7 @@
     <div class="recommend">新词发现</div>
     <el-card class="box-card">
       <div class="text item" style="padding-top:0px">
-        <ul class="jingzhun" style="margin-top:10px">
+        <ul class="jingzhun">
           <li
             v-for="(item,index) in newdate"
             :key="index"
@@ -151,7 +151,7 @@
               <el-button
                 type="text"
                 @click="gettimedate($event);centerDialogVisible1 = true"
-                style="font-size:14px"
+                style="font-size:16px"
                 :data-id="item.timeType"
                 :id="item.time"
               >{{item.time}}新词</el-button>
@@ -1214,14 +1214,11 @@ export default {
 };
 </script>
 <style>
-.box-card {
-  border-radius: 5px;
-}
-.text {
-  font-size: 14px;
-}
 .el-card__body {
   padding-top: 10px;
+}
+.el-card {
+  margin-bottom: 10px
 }
 .item {
   padding: 12px 0 0;
@@ -1234,10 +1231,9 @@ export default {
   font-weight: 900;
   border: 1px solid;
   border-color: #e0e0e0;
-  border-radius: 5px;
-  margin-bottom: 20px;
-  margin-top: 25px;
-  font-size: 18px;
+  margin-bottom: 10px;
+  margin-top: 5px;
+  font-size: 20px;
   color: #333;
 }
 .r-list {
@@ -1246,9 +1242,18 @@ export default {
 .r-list li {
   margin: 10px auto;
 }
+.item{
+  color:#000;
+}
 .item:hover {
-  color: #66B20E !important;
+  color: #409eff !important;
   cursor: pointer !important;
+}
+.jingzhun .el-button--text span{
+  color: #000;
+}
+.jingzhun .el-button--text span:hover{
+  color: #409eff;
 }
 .el-button--primary:active {
   background: #66B20E !important;
@@ -1266,13 +1271,7 @@ export default {
   background: #66B20E !important;
   cursor: pointer !important;
 }
-.text a:hover {
-  text-decoration: none;
-}
-.text a {
-  color: #053357 !important;
-  line-height: 15px;
-}
+
 .kuai1 {
   margin: 20px 0 30px;
 }
@@ -1342,8 +1341,11 @@ export default {
   font-weight: 700;
   margin-bottom: 20px;
   margin-top: 25px;
-  font-size: 18px;
+  font-size: 20px;
   color: #409eff;
+}
+.recommend span:hover{
+  color:#66b1ff;
 }
 .huaxiang {
   width: 1650px;

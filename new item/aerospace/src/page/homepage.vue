@@ -70,7 +70,7 @@ export default {
   display: inline-block;
   width: 100%;
   padding-bottom: 100px;
-  font-size: 12px;
+  
   font-family: "Microsoft yahei";
   background-color: #fff;
   clear: both;
@@ -164,6 +164,9 @@ a:hover{
     font-size: 14px;
     text-align: center;
 }
+.personal-links li a:hover{
+    color: #1a63d3;
+}
 .personal-links li + li {
     border-top: 1px dashed #d4d4d4;
 }
@@ -177,7 +180,8 @@ a:hover{
 .backgound-home{
   width: 1920px;
   margin: 0 auto;
-  background: url('../assets/img/gloable.jpg') no-repeat ;
+  background: url('../assets/img/shouyeimg.jpg') no-repeat ;
   background-size: 1920px 100%  ;
 }
+
 </style>

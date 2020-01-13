@@ -194,5 +194,8 @@ export default {
 a{
     line-height: 22px;
 }
+.footer{
+    font-size: 12px !important
+}
 </style>
 

@@ -88,11 +88,8 @@ export default {
 };
 </script>
 <style >
-.box-card {
-  border-radius: 5px;
-}
 .text {
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .item {
@@ -112,7 +109,7 @@ export default {
   text-decoration: none !important;
 }
 .text a {
-  color: #053357 !important;
+  color: #000 !important;
   line-height: 15px;
 }
 .text h4 {

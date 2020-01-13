@@ -47,7 +47,7 @@ export default {
     background-image: url('../assets/img/banner1.jpg')
 }
 .header .head-main {
-    width: 1220px;
+    width: 1400px;
     height: 70px;
     margin: 0 auto;
 }
@@ -64,7 +64,7 @@ export default {
 }
 .login-btns {
     float: right;
-    margin-left: 40px;
+    margin-left: 20px;
     margin-top: 6px;
 }
 .login-btns li {
@@ -114,6 +114,9 @@ export default {
     padding-top: 14px;
     color: #fff;
 }
+.link-list li a:hover{
+    color: #11cae2 !important;
+}
 .header .link-list li {
     display: inline-block;
     vertical-align: top;
@@ -122,7 +125,7 @@ export default {
     line-height: 14px;
 }
  .link-a {
-    font-size: 14px;
+    font-size: 16px;
     color: #ffffff;
     font-family: "Microsoft yahei";
 }

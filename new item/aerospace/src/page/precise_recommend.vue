@@ -167,9 +167,9 @@ export default {
 }
 .icon-txt {
   display: inline-block;
-  width: 16px;
-  height: 16px;
-  line-height: 16px;
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
   color: #fff;
   border-radius: 2px;
   text-align: center;
