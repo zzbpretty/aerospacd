@@ -582,7 +582,7 @@ export default {
   methods: {
     // 跳转到知识图谱页面
     toKnowledge() {
-      window.open("http://192.168.100.37:8002", "_blank");
+      window.open("http://192.168.100.37:8001", "_blank");
     },
     //自定义时间段新词搜索
     getzdyword() {
